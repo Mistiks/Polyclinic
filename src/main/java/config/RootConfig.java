@@ -3,14 +3,11 @@ package config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import storage.api.IPasswordRepository;
-import storage.api.IUserRepository;
+import storage.api.*;
 import utils.HashCreator;
 import utils.api.IHashCreator;
-import view.AuthService;
-import view.UserService;
-import view.api.IAuthService;
-import view.api.IUserService;
+import view.*;
+import view.api.*;
 
 /**
  * Defining configuration for user's non-web components
@@ -48,5 +45,45 @@ public class RootConfig {
     @Bean
     public IHashCreator getHashCreator() {
         return new HashCreator();
+    }
+
+    @Bean
+    public INewsService getNewsService(INewsRepository repository) {
+        return new NewsService(repository);
+    }
+
+    @Bean
+    public IAddressService getAddressService(IAddressRepository repository) {
+        return new AddressService(repository);
+    }
+
+    @Bean
+    public IPassportService getPassportService(IPassportRepository repository) {
+        return new PassportService(repository);
+    }
+
+    @Bean
+    public IDepartmentService getDepartmentService(IDepartmentRepository repository) {
+        return new DepartmentService(repository);
+    }
+
+    @Bean
+    public IDiseaseService getDiseaseService(IDiseaseRepository repository) {
+        return new DiseaseService(repository);
+    }
+
+    @Bean
+    public ISymptomService getSymptomService(ISymptomRepository repository) {
+        return new SymptomService(repository);
+    }
+
+    @Bean
+    public IMedCardService getMedCardService(IMedCardRepository repository) {
+        return new MedCardService(repository);
+    }
+
+    @Bean
+    public ITalonService getTalonService(ITalonRepository repository) {
+        return new TalonService(repository);
     }
 }

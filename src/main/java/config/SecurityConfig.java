@@ -5,16 +5,20 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.oauth2.client.CommonOAuth2Provider;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.client.InMemoryOAuth2AuthorizedClientService;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
@@ -30,6 +34,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             CommonOAuth2Provider.GOOGLE
     );
 
+    @Autowired
+    Environment env;
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -43,6 +50,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .collect(Collectors.toList());
 
         return new InMemoryClientRegistrationRepository(registrations);
+    }
+
+    @Bean
+    public OAuth2AuthorizedClientService authorizedClientService() {
+        return new InMemoryOAuth2AuthorizedClientService(clientRegistrationRepository(env));
     }
 
     private ClientRegistration getRegistration(CommonOAuth2Provider client, Environment env) {
@@ -89,13 +101,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and().formLogin()
 //                .loginPage("/login")
                 .failureUrl("/login?error=true")
-                .defaultSuccessUrl("/home")
+                .defaultSuccessUrl("/admin/dashboard")
                 .usernameParameter("login")
                 .passwordParameter("password")
                 .and().oauth2Login()
 //                .loginPage("/oauth_login")
                 .failureUrl("/oauth_login?error=true")
-                .defaultSuccessUrl("/home")
+                .defaultSuccessUrl("/admin/dashboard")
                 .and().logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                 .logoutSuccessUrl("/login?logout=true")
@@ -105,6 +117,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/login/**").permitAll()
                 .antMatchers("/oauth_login/**").permitAll()
                 .antMatchers("/admin/**").hasAuthority("ADMIN")
+                .antMatchers(HttpMethod.POST, "/airports").hasAuthority("ADMIN")
                 .antMatchers("/**").permitAll()
                 .anyRequest().authenticated()
         ;

@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Sign Up</title>
+    <title>Sign In</title>
 
     <!-- Bootstrap core CSS -->
     <link href="webjars/bootstrap/5.0.1/css/bootstrap.min.css" rel="stylesheet">

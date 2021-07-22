@@ -2,12 +2,20 @@ package controller.web.servlets;
 
 import model.User;
 import javax.servlet.http.*;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ResolvableType;
+import org.springframework.security.oauth2.client.registration.ClientRegistration;
+import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import view.api.IAuthService;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Class which implements login functionality
@@ -27,6 +35,14 @@ public class LoginServlet {
 
     /** Instance of class that implements IAuthService interface */
     private final IAuthService authService;
+
+    private static String authorizationRequestBaseUri
+            = "oauth2/authorization";
+    Map<String, String> oauth2AuthenticationUrls
+            = new HashMap<>();
+
+    @Autowired
+    private ClientRegistrationRepository clientRegistrationRepository;
 
     /**
      * Default constructor which connect IAuthService interface to servlet

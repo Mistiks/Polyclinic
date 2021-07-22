@@ -2,6 +2,7 @@ package model;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Set;
 
 @Entity(name = "User")
 @Table(name = "users", schema = "polyclinic")
@@ -24,9 +25,6 @@ public class User implements Serializable {
     @Column(name = "login")
     private String login;
 
-    @Column(name = "card_id")
-    private int cardId;
-
     @Column(name = "status")
     private String status;
 
@@ -48,11 +46,12 @@ public class User implements Serializable {
     @Column(name = "cabinet_num")
     private int cabinetNum;
 
-    @Column(name = "card_id_observed")
-    private int cardIdObserved;
-
     @Column(name = "department")
     private int department;
+
+    @ManyToOne
+    @JoinColumn(name="department", nullable=false, insertable = false, updatable = false)
+    private Department departments;
 
     @Column(name = "picture")
     private String picture;
@@ -60,6 +59,16 @@ public class User implements Serializable {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "login", referencedColumnName = "user_login", insertable = false, updatable = false)
     private Password password;
+
+    @OneToMany(mappedBy="user")
+    private Set<Address> addresses;
+
+    @OneToMany(mappedBy="user")
+    private Set<Passport> passports;
+
+    @OneToMany(mappedBy="user")
+    private Set<MedCard> medcards;
+
 
     public User() {}
 
@@ -105,14 +114,6 @@ public class User implements Serializable {
 
     public void setLogin(String login) {
         this.login = login;
-    }
-
-    public int getCardId() {
-        return cardId;
-    }
-
-    public void setCardId(int cardId) {
-        this.cardId = cardId;
     }
 
     public String getStatus() {
@@ -169,14 +170,6 @@ public class User implements Serializable {
 
     public void setCabinetNum(int cabinetNum) {
         this.cabinetNum = cabinetNum;
-    }
-
-    public int getCardIdObserved() {
-        return cardIdObserved;
-    }
-
-    public void setCardIdObserved(int cardIdObserved) {
-        this.cardIdObserved = cardIdObserved;
     }
 
     public int getDepartment() {
