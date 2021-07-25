@@ -2,7 +2,6 @@ package model;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Set;
 
 @Entity
 @Table(name = "department_data", schema = "polyclinic")
@@ -18,9 +17,6 @@ public class Department implements Serializable {
 
     @Column(name = "department_data")
     private String departmentData;
-
-    @OneToMany(mappedBy="departments")
-    private Set<User> users;
 
     public Department() {}
 

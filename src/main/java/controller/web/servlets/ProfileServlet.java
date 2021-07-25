@@ -4,14 +4,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import javax.servlet.http.HttpServletResponse;
-
 @Controller
-@RequestMapping(value = "/home")
-public class HomeServlet {
+@RequestMapping(value = "/profile")
+public class ProfileServlet {
 
     @GetMapping
     public String doGet() {
-        return "home";
+        return "profile";
     }
 }

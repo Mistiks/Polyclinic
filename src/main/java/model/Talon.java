@@ -22,6 +22,10 @@ public class Talon implements Serializable {
     @Column(name = "doctor_id")
     private Integer doctorId;
 
+    @ManyToOne
+    @JoinColumn(name="id", nullable=false, insertable = false, updatable = false)
+    private User user;
+
     public Talon() {}
 
     public Talon(Integer userId, LocalDateTime visitTime, Integer doctorId) {

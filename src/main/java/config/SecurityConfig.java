@@ -60,7 +60,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private ClientRegistration getRegistration(CommonOAuth2Provider client, Environment env) {
 
         String clientName = client.name().toLowerCase();
-
         String clientId = env.getProperty(CLIENT_PROPERTY_KEY + clientName + ".client-id");
 
         if (clientId == null) {
@@ -98,14 +97,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .httpBasic()
-                .and().formLogin()
-//                .loginPage("/login")
-                .failureUrl("/login?error=true")
-                .defaultSuccessUrl("/admin/dashboard")
-                .usernameParameter("login")
-                .passwordParameter("password")
                 .and().oauth2Login()
-//                .loginPage("/oauth_login")
+                .loginPage("/signIn")
                 .failureUrl("/oauth_login?error=true")
                 .defaultSuccessUrl("/admin/dashboard")
                 .and().logout()

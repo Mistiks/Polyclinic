@@ -1,14 +1,22 @@
 package controller.web.servlets;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import model.User;
+import net.minidev.json.JSONObject;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import utils.api.IJsonWriter;
 import view.api.IUserService;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.HashMap;
 
 @Controller
 @RequestMapping(value = "/signUp")
@@ -19,13 +27,16 @@ public class RegisterServlet {
 
     /** Instance of class that implements IUserService interface */
     private final IUserService userService;
+    private final IJsonWriter jsonWriter;
 
     /** Default constructor which connect IUserService interface to servlet
      *
      * @param userService instance of IUserService interface
+     * @param jsonWriter
      */
-    public RegisterServlet(IUserService userService) {
+    public RegisterServlet(IUserService userService, IJsonWriter jsonWriter) {
         this.userService = userService;
+        this.jsonWriter = jsonWriter;
     }
 
     /**
@@ -34,7 +45,7 @@ public class RegisterServlet {
      * @return URL of registration page
      */
     @GetMapping
-    public String doGet() {
+    public String doGet(HttpServletRequest request) {
         return "signUp";
     }
 
@@ -46,18 +57,31 @@ public class RegisterServlet {
      * @return destination URL
      */
     @PostMapping
-    public String doPost(HttpServletRequest request, Model model) {
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
+        String contextPath = request.getContextPath();
+        HashMap<String, String> receivedData;
+        HashMap<String, String> result = new HashMap<>();
+        String data;
+        ObjectMapper mapper = new ObjectMapper();
+        StringBuilder sb = new StringBuilder();
+        BufferedReader br = request.getReader();
+
+        while( (data = br.readLine()) != null ){
+            sb.append(data);
+        }
+
+        receivedData = mapper.readValue(sb.toString(), new TypeReference<>() {});
 
         try {
-            User user = new User(username);
-            this.userService.signUp(user, password);
-            return "redirect:/home";
+            User user = new User(receivedData.get("username"));
+            this.userService.signUp(user, receivedData.get("password"));
+            result.put("redirect", contextPath + "/home");
         } catch (IllegalArgumentException e){
-            model.addAttribute(SIGN_UP_FAIL, e.getMessage());
-            return "signUp";
+            request.getSession().setAttribute(SIGN_UP_FAIL, e.getMessage());
+            result.put("redirect", contextPath + "/signUp");
+        } finally {
+            jsonWriter.write(result, response);
         }
     }
 }

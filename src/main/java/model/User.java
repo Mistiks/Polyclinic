@@ -46,19 +46,20 @@ public class User implements Serializable {
     @Column(name = "cabinet_num")
     private int cabinetNum;
 
-    @Column(name = "department")
-    private int department;
+    @Column(name = "hash")
+    private String hash;
 
-    @ManyToOne
-    @JoinColumn(name="department", nullable=false, insertable = false, updatable = false)
-    private Department departments;
+    @Column(name = "salt")
+    private String salt;
 
     @Column(name = "picture")
     private String picture;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "login", referencedColumnName = "user_login", insertable = false, updatable = false)
-    private Password password;
+    @Column(name = "mail")
+    private String mail;
+
+    @Column(name = "google_id")
+    private String googleId;
 
     @OneToMany(mappedBy="user")
     private Set<Address> addresses;
@@ -69,11 +70,23 @@ public class User implements Serializable {
     @OneToMany(mappedBy="user")
     private Set<MedCard> medcards;
 
+    @OneToMany(mappedBy="user")
+    private Set<Talon> talons;
 
     public User() {}
 
     public User(String login) {
         this.login = login;
+        this.status = "unverified";
+        this.role = "patient";
+    }
+
+    public User(String login, String id, String mail) {
+        this.login = login;
+        this.googleId = id;
+        this.mail = mail;
+        this.status = "unverified";
+        this.role = "patient";
     }
 
     public Integer getId() {
@@ -172,19 +185,43 @@ public class User implements Serializable {
         this.cabinetNum = cabinetNum;
     }
 
-    public int getDepartment() {
-        return department;
-    }
-
-    public void setDepartment(int department) {
-        this.department = department;
-    }
-
     public String getPicture() {
         return picture;
     }
 
     public void setPicture(String picture) {
         this.picture = picture;
+    }
+
+    public String getHash() {
+        return hash;
+    }
+
+    public void setHash(String hash) {
+        this.hash = hash;
+    }
+
+    public String getSalt() {
+        return salt;
+    }
+
+    public void setSalt(String salt) {
+        this.salt = salt;
+    }
+
+    public String getMail() {
+        return mail;
+    }
+
+    public void setMail(String mail) {
+        this.mail = mail;
+    }
+
+    public String getGoogleId() {
+        return googleId;
+    }
+
+    public void setGoogleId(String googleId) {
+        this.googleId = googleId;
     }
 }

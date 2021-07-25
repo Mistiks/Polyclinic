@@ -1,6 +1,5 @@
 package view.api;
 
-import model.Password;
 import model.User;
 
 public interface IUserService {
@@ -20,5 +19,5 @@ public interface IUserService {
      */
     void signUp(User user, String password);
 
-    Password getPasswordObject(String login);
+    void signUpGoogle(User user);
 }

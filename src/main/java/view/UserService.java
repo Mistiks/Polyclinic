@@ -1,9 +1,7 @@
 package view;
 
-import model.Password;
 import model.User;
 import org.apache.commons.lang3.RandomStringUtils;
-import storage.api.IPasswordRepository;
 import storage.api.IUserRepository;
 import utils.api.IHashCreator;
 import view.api.IUserService;
@@ -12,12 +10,10 @@ import java.util.Random;
 public class UserService implements IUserService {
 
     private final IUserRepository repository;
-    private final IPasswordRepository passwordRepository;
     private final IHashCreator hashCreator;
 
-    public UserService(IUserRepository repository, IPasswordRepository passwordRepository, IHashCreator hashCreator) {
+    public UserService(IUserRepository repository, IHashCreator hashCreator) {
         this.repository = repository;
-        this.passwordRepository = passwordRepository;
         this.hashCreator = hashCreator;
     }
 
@@ -40,16 +36,14 @@ public class UserService implements IUserService {
     @Override
     public void signUp(User user, String password) {
         this.validationForSignUp(user, password);
-        Password passwordData = createPasswordObject(user.getLogin(), password);
-        user.setStatus("unverified");
-        user.setRole("patient");
+        user.setSalt(createSalt());
+        user.setHash(createPasswordHashWithSalt(password, user.getSalt()));
         this.repository.save(user);
-        this.passwordRepository.save(passwordData);
     }
 
     @Override
-    public Password getPasswordObject(String login) {
-        return this.passwordRepository.getByLogin(login);
+    public void signUpGoogle(User user) {
+        this.repository.save(user);
     }
 
     /**
@@ -87,8 +81,7 @@ public class UserService implements IUserService {
         return RandomStringUtils.random(length, true, false);
     }
 
-    private Password createPasswordObject(String login, String password) {
-        String salt = createSalt();
-        return new Password(login, hashCreator.createHash(password.concat(salt)), salt);
+    private String createPasswordHashWithSalt(String password, String salt) {
+        return hashCreator.createHash(password.concat(salt));
     }
 }

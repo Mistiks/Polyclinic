@@ -18,4 +18,6 @@ public interface IAuthService {
      * @return User object that has same login and password, null if user doesn't exist
      */
     User authentication(String login, String password);
+
+    User googleAuthentication(String mail, String id);
 }

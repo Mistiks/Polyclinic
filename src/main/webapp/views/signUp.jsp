@@ -10,13 +10,7 @@
     <title>Sign Up</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="webjars/bootstrap/5.0.1/css/bootstrap.min.css" rel="stylesheet">
-
-    <style>
-    .form_space {
-        margin-bottom:15px;
-    }
-    </style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous"
 
     <!-- Custom styles for this template -->
     <link href="resources/theme1/css/signin.css" rel="stylesheet" />
@@ -24,8 +18,26 @@
   </head>
   <body class="text-center">
 
+<script>
+function sendForm() {
+var registerData = new Object();
+registerData.username = $("#floatingInput").val();
+registerData.password = $("#floatingPassword").val();
+    $.ajax({
+      url: "${pageContext.request.contextPath}/signUp",
+      type: "post",
+      dataType: "json",
+      data: JSON.stringify(registerData),
+      contentType: 'application/json',
+                success: function(responseData) {
+                  window.location.href = responseData.redirect;
+                }
+    })
+}
+</script>
+
 <main class="form-signin">
-  <form method="POST" action="${pageContext.request.contextPath}/signUp">
+  <form id="register" name = "register" >
   <div class = "form_space">
     <a class="h2 text-dark"  href="home">IPolyclinic</a>
   </div>
@@ -41,13 +53,14 @@
     </div>
 
     <div class = "form_space">
-    <button class="w-100 btn btn-lg btn-primary" type="submit">Sign up</button>
+    <button class="w-100 btn btn-lg btn-primary" type="button" onclick = "sendForm();">Sign up</button>
     </div>
   </form>
   <h2 class="h5 mb-3 fw-normal"><span style='color: red;'>${fail_sign_up}</span></h2>
 </main>
 
-<script src="webjars/jquery/3.6.0/jquery.min.js"></script>
-<script src="webjars/bootstrap/5.0.1/js/bootstrap.min.js"></script>
+<c:remove var="fail_sign_up" scope="session" />
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
   </body>
 </html>

@@ -5,7 +5,9 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import storage.api.*;
 import utils.HashCreator;
+import utils.JsonWriter;
 import utils.api.IHashCreator;
+import utils.api.IJsonWriter;
 import view.*;
 import view.api.*;
 
@@ -26,9 +28,8 @@ public class RootConfig {
      * @return object which implements IUserService interface
      */
     @Bean
-    public IUserService getUserService(IUserRepository repository, IPasswordRepository passwordRepository,
-                                       IHashCreator hashCreator) {
-        return new UserService(repository, passwordRepository, hashCreator);
+    public IUserService getUserService(IUserRepository repository, IHashCreator hashCreator) {
+        return new UserService(repository, hashCreator);
     }
 
     /**
@@ -45,6 +46,11 @@ public class RootConfig {
     @Bean
     public IHashCreator getHashCreator() {
         return new HashCreator();
+    }
+
+    @Bean
+    public IJsonWriter getJsonWriter() {
+        return new JsonWriter();
     }
 
     @Bean

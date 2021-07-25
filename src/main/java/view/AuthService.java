@@ -1,6 +1,5 @@
 package view;
 
-import model.Password;
 import model.User;
 import utils.api.IHashCreator;
 import view.api.IAuthService;
@@ -36,17 +35,34 @@ public class AuthService implements IAuthService {
      */
     @Override
     public User authentication(String login, String password) {
-        Password passwordData = this.userService.getPasswordObject(login);
         User user = this.userService.get(login);
 
-        if (user == null || passwordData == null) {
+        if (user == null) {
             return null;
         }
 
-        if (!Objects.equals(passwordData.getHash(), hashCreator.createHash(password.concat(passwordData.getSalt())))) {
+        if (!Objects.equals(user.getHash(), hashCreator.createHash(password.concat(user.getSalt())))) {
             return null;
         }
 
         return user;
+    }
+
+    @Override
+    public User googleAuthentication(String login, String id) {
+        User user = this.userService.get(login);
+
+        if (user == null) {
+            user = new User(login, id, login);
+            this.userService.signUpGoogle(user);
+            return user;
+        }
+
+        if (Objects.equals(user.getGoogleId(), id)) {
+            return user;
+        } else {
+            throw new IllegalArgumentException("User with that login already exists");
+        }
+
     }
 }

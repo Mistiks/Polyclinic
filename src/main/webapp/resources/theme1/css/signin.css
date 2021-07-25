@@ -18,6 +18,10 @@ body {
   margin: auto;
 }
 
+.form_space {
+    margin-bottom:15px;
+}
+
 .form-signin .checkbox {
   font-weight: 400;
 }
