@@ -30,7 +30,7 @@ public class Address implements Serializable {
     @Column(name = "residence_country")
     private String residenceCountry;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="id", nullable=false, insertable = false, updatable = false)
     private User user;
 
@@ -99,5 +99,13 @@ public class Address implements Serializable {
 
     public void setResidenceCountry(String residenceCountry) {
         this.residenceCountry = residenceCountry;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface IPassportRepository extends JpaRepository<Passport, Integer> {
+
+    Passport getByUserId(Integer id);
 }

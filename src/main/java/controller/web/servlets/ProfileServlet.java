@@ -58,4 +58,34 @@ public class ProfileServlet {
 
         jsonWriter.write(result, response);
     }
+
+    @PostMapping(value = "/account-address")
+    public void updateAddress(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        HashMap<String, String> receivedData = jsonWriter.read(request);
+        HashMap<String, String> result = new HashMap<>();
+
+        try {
+            accountService.updateAddress(receivedData, request);
+            result.put("success", "Information saved!");
+        } catch (IllegalArgumentException e) {
+            result.put("error", e.getMessage());
+        }
+
+        jsonWriter.write(result, response);
+    }
+
+    @PostMapping(value = "/account-passport")
+    public void updatePassport(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        HashMap<String, String> receivedData = jsonWriter.read(request);
+        HashMap<String, String> result = new HashMap<>();
+
+        try {
+            accountService.updatePassport(receivedData, request);
+            result.put("success", "Information saved!");
+        } catch (IllegalArgumentException e) {
+            result.put("error", e.getMessage());
+        }
+
+        jsonWriter.write(result, response);
+    }
 }

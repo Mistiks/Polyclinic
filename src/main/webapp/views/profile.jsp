@@ -8,6 +8,7 @@
     <title>IPolyclinic</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="resources/theme1/css/blog.css" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css?family=Playfair&#43;Display:700,900&amp;display=swap" rel="stylesheet" />
@@ -33,7 +34,15 @@
     sendData.city = $("#city").val();
     sendData.street = $("#street").val();
     sendData.house = $("#house").val();
-    sendData.flat = $("#flat").val();
+    sendData.passportId = $("#passportId").val();
+    sendData.passportNumber = $("#passportNumber").val();
+    sendData.passportCountry = $("#passportCountry").val();
+    sendData.nationality = $("#nationality").val();
+    sendData.sex = $("#sex").val();
+    sendData.issueDate = $("#issueDate").val();
+    sendData.expireDate = $("#expireDate").val();
+    sendData.birthCountry = $("#birthCountry").val();
+    sendData.birthDate = $("#birthDate").val();
         $.ajax({
           url: "${pageContext.request.contextPath}/profile/" + activeId,
           type: "post",
@@ -73,7 +82,7 @@
       <a class="p-2 link-secondary" href="#">About US</a>
       <a class="p-2 link-secondary" href="#">Departments</a>
       <a class="p-2 link-secondary" href="#">Disease</a>
-      <a class="p-2 link-secondary" href="#">Contact</a>
+      <a class="p-2 link-secondary" href="logout">Logout</a>
     </nav>
   </div>
 </div>
@@ -165,7 +174,7 @@
                   <label class="form-label">Country</label>
                   <select class="custom-select" name = "residenceCountry" id = "residenceCountry">
                     <option>USA</option>
-                    <option selected="">Canada</option>
+                    <option selected="">Belarus</option>
                     <option>UK</option>
                     <option>Germany</option>
                     <option>France</option>
@@ -225,13 +234,18 @@
                 </div>
 
                 <div class="form-group">
-                  <label class="form-label">Issue date</label>
+                  <label class="form-label">Issue date in format dd/MM/yyyy</label>
                   <input type="text" class="form-control" value="" name ="issueDate" id ="issueDate">
                 </div>
 
                 <div class="form-group">
-                  <label class="form-label">Expire date</label>
+                  <label class="form-label">Expire date in format dd/MM/yyyy</label>
                   <input type="text" class="form-control" value="" name ="expireDate" id ="expireDate">
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">Birth Date in format dd/MM/yyyy</label>
+                  <input type="text" class="form-control" value="" name ="birthDate" id ="birthDate">
                 </div>
 
                 <div class="form-group">
@@ -248,7 +262,6 @@
 
     <div class="text-right mt-3">
       <button type="button" class="btn btn-primary" onclick = "sendForm();">Save changes</button>&nbsp;
-      <button type="button" class="btn btn-default">Cancel</button>
     </div>
 </div>
 

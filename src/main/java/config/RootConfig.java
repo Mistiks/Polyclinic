@@ -64,8 +64,10 @@ public class RootConfig {
     }
 
     @Bean
-    public IAccountService getAccountService(IUserService userService, IUserRepository repository, IHashCreator hashCreator) {
-        return new AccountService(repository, userService, hashCreator);
+    public IAccountService getAccountService(IUserService userService, IUserRepository repository,
+                                             IHashCreator hashCreator, IAddressRepository addressRepository,
+                                             IPassportRepository passportRepository) {
+        return new AccountService(repository, addressRepository, passportRepository, userService, hashCreator);
     }
 
     @Bean

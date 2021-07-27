@@ -6,4 +6,6 @@ import java.util.HashMap;
 public interface IAccountService {
     void updateGeneralInfo(HashMap<String, String> info, HttpServletRequest request);
     void updatePassword(HashMap<String, String> info, HttpServletRequest request);
+    void updateAddress(HashMap<String, String> info, HttpServletRequest request);
+    void updatePassport(HashMap<String, String> info, HttpServletRequest request);
 }

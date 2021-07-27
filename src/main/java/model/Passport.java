@@ -41,7 +41,7 @@ public class Passport implements Serializable {
     private LocalDate expireDate;
 
     @Column(name = "birth_place")
-    private String birth;
+    private String birthCountry;
 
     @ManyToOne
     @JoinColumn(name="id", nullable=false, insertable = false, updatable = false)
@@ -59,7 +59,7 @@ public class Passport implements Serializable {
         this.sex = sex;
         this.issueDate = issueDate;
         this.expireDate = expireDate;
-        this.birth = birth;
+        this.birthCountry = birth;
     }
 
     public Integer getId() {
@@ -142,11 +142,11 @@ public class Passport implements Serializable {
         this.expireDate = expireDate;
     }
 
-    public String getBirth() {
-        return birth;
+    public String getBirthCountry() {
+        return birthCountry;
     }
 
-    public void setBirth(String birth) {
-        this.birth = birth;
+    public void setBirthCountry(String birthCountry) {
+        this.birthCountry = birthCountry;
     }
 }

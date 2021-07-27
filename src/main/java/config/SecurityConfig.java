@@ -103,7 +103,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .defaultSuccessUrl("/admin/dashboard")
                 .and().logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                .logoutSuccessUrl("/login?logout=true")
+                .logoutSuccessUrl("/home")
                 .and().exceptionHandling()
                 .accessDeniedPage("/access_denied")
                 .and().authorizeRequests()
