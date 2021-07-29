@@ -81,7 +81,7 @@
       <a class="p-2 link-secondary" href="#">Home</a>
       <a class="p-2 link-secondary" href="#">About US</a>
       <a class="p-2 link-secondary" href="#">Departments</a>
-      <a class="p-2 link-secondary" href="#">Disease</a>
+      <a class="p-2 link-secondary" href="talon">Get ticket</a>
       <a class="p-2 link-secondary" href="logout">Logout</a>
     </nav>
   </div>
@@ -229,8 +229,12 @@
                 </div>
 
                 <div class="form-group">
-                  <label class="form-label">Sex</label>
-                  <input type="text" class="form-control" value="" name ="sex" id ="sex">
+                  <label class="form-label">Gender</label>
+                        <select class="custom-select" value="" name ="sex" id ="sex">
+                            <option></option>
+                            <option>Male</option>
+                            <option>Female</option>
+                        </select>
                 </div>
 
                 <div class="form-group">
@@ -265,8 +269,6 @@
     </div>
 </div>
 
-<script type="text/javascript">
-
-</script>
+<script type="text/javascript"></script>
 </body>
 </html>

@@ -49,20 +49,15 @@ public class AuthService implements IAuthService {
     }
 
     @Override
-    public User googleAuthentication(String login, String id) {
-        User user = this.userService.get(login);
+    public User googleAuthentication(String mail, String id) {
+        User user = this.userService.getByGoogleId(id);
 
         if (user == null) {
-            user = new User(login, id, login);
+            user = new User(mail, id, mail);
             this.userService.signUpGoogle(user);
             return user;
         }
 
-        if (Objects.equals(user.getGoogleId(), id)) {
-            return user;
-        } else {
-            throw new IllegalArgumentException("User with that login already exists");
-        }
-
+        return user;
     }
 }

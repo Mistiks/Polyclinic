@@ -45,7 +45,7 @@ public class RegisterServlet {
      * @return URL of registration page
      */
     @GetMapping
-    public String doGet(HttpServletRequest request) {
+    public String doGet() {
         return "signUp";
     }
 

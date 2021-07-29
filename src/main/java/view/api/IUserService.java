@@ -12,6 +12,8 @@ public interface IUserService {
      */
     User get(String login);
 
+    User getByGoogleId(String id);
+
     /**
      * Register user if all fields are filled, and username is unique
      *

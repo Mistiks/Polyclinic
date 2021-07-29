@@ -216,12 +216,8 @@ html:not(.dark-style) .account-settings-links .list-group-item.active {
     border-color: rgba(24,28,33,0.03) !important;
 }
 
-div.ErrorAnswer
-{
-    color: red;
-}
-
-div.SuccessAnswer
-{
-    color: green;
+.isa_info {
+margin: 10px 0px;
+padding:12px;
+color: #00529B;
 }

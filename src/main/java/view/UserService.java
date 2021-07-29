@@ -28,6 +28,11 @@ public class UserService implements IUserService {
         return this.repository.getByLogin(login);
     }
 
+    @Override
+    public User getByGoogleId(String id) {
+        return this.repository.getByGoogleId(id);
+    }
+
     /**
      * Register user if all fields are filled, and username is unique
      *

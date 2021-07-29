@@ -3,6 +3,7 @@ package view;
 import model.Address;
 import model.Passport;
 import model.User;
+import model.enums.Gender;
 import storage.api.IAddressRepository;
 import storage.api.IPassportRepository;
 import storage.api.IUserRepository;
@@ -73,6 +74,13 @@ public class AccountService implements IAccountService {
     @Override
     public void updatePassport(HashMap<String, String> info, HttpServletRequest request) {
         User user = (User) request.getSession().getAttribute(CURRENT_USER);
+        String gender = "";
+
+        if (info.get("sex").equals("Male")) {
+            gender = Gender.MALE.getGender();
+        } else if (info.get("sex").equals("Feale")) {
+            gender = Gender.FEMALE.getGender();
+        }
 
         Passport passport = passportRepository.getByUserId(user.getId());
 
@@ -92,12 +100,13 @@ public class AccountService implements IAccountService {
         if (passport == null) {
             passport = new Passport(user.getId(), info.get("passportId"), info.get("passportNum"),
                     info.get("passportCountry"), info.get("nationality"), birthDate,
-                    info.get("sex"), issueDate, expireDate, info.get("birthCountry"));
+                    gender, issueDate, expireDate, info.get("birthCountry"));
         } else {
             passport.setPassportId(info.get("passportId"));
             passport.setPassportNum(info.get("passportNum"));
             passport.setCountry(info.get("passportCountry"));
             passport.setNationality(info.get("nationality"));
+            passport.setSex(gender);
             passport.setBirthDate(birthDate);
             passport.setIssueDate(issueDate);
             passport.setExpireDate(expireDate);

@@ -97,9 +97,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .httpBasic()
+                .and().formLogin()
+                .loginPage("/signIn")
+                .permitAll()
                 .and().oauth2Login()
                 .loginPage("/signIn")
-                .failureUrl("/oauth_login?error=true")
+                .failureUrl("/signIn?error=true")
                 .defaultSuccessUrl("/admin/dashboard")
                 .and().logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))

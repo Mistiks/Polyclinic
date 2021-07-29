@@ -48,6 +48,7 @@
       <a class="p-2 link-secondary" href="#">Departments</a>
       <a class="p-2 link-secondary" href="#">Disease</a>
       <a class="p-2 link-secondary" href="#">Contact</a>
+      <a class="p-2 link-secondary" href="talon">Get ticket</a>
     </nav>
   </div>
 </div>

@@ -34,6 +34,11 @@ public class Talon implements Serializable {
         this.doctorId = doctorId;
     }
 
+    public Talon(LocalDateTime visitTime, Integer doctorId) {
+        this.visitTime = visitTime;
+        this.doctorId = doctorId;
+    }
+
     public Integer getId() {
         return id;
     }
