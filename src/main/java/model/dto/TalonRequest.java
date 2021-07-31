@@ -2,15 +2,15 @@ package model.dto;
 
 public class TalonRequest {
     private String specialization;
-    private String fio;
     private String date;
     private String time;
+    private Integer doctorId;
 
-    public TalonRequest(String specialization, String fio, String date, String time) {
+    public TalonRequest(String specialization, String date, String time, Integer doctorId) {
         this.specialization = specialization;
-        this.fio = fio;
         this.date = date;
         this.time = time;
+        this.doctorId = doctorId;
     }
 
     public TalonRequest(){}
@@ -21,14 +21,6 @@ public class TalonRequest {
 
     public void setSpecialization(String specialization) {
         this.specialization = specialization;
-    }
-
-    public String getFio() {
-        return fio;
-    }
-
-    public void setFio(String fio) {
-        this.fio = fio;
     }
 
     public String getDate() {
@@ -45,5 +37,13 @@ public class TalonRequest {
 
     public void setTime(String time) {
         this.time = time;
+    }
+
+    public Integer getDoctorId() {
+        return doctorId;
+    }
+
+    public void setDoctorId(Integer doctorId) {
+        this.doctorId = doctorId;
     }
 }

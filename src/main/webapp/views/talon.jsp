@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ page import="java.util.*, java.text.*, model.User, java.time.LocalDateTime, java.time.format.DateTimeFormatter" %>
 
 <html lang="en">
 <head>
@@ -15,26 +16,59 @@
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
+    function createVariable() {
+    var doctorId;
+    }
+    </script>
+
+    <script>
     function sendForm() {
     $('#response').text("");
+    var methodType;
     var $activeTab = $('.tab-content .tab-pane.active');
     var activeId = $activeTab.attr('id');
     var sendData = new Object();
-    sendData.specialization = $("#specialization :selected").val();;
-    sendData.doctorName = $("#doctorName").val();
-    sendData.date = $("#date").val();
-    sendData.time = $("#time").val();
+    sendData.specialization = $("#specialization :selected").val();
+    sendData.fio = $("#fio :selected").val();
+    sendData.date = $("#date :selected").val();
+    sendData.time = $("#time :selected").val();
+    if ( activeId != "specialization") {
+        sendData.doctorId = $("#fio :selected").attr('doctorId');
+    }
         $.ajax({
           url: "${pageContext.request.contextPath}/talon/" + activeId,
           type: "post",
           dataType: "json",
           data: JSON.stringify(sendData),
           contentType: 'application/json',
+          statusCode: {
+            201: function() {
+                $('#response').text("Talon saved!");
+                }
+            },
             success: function(json, textStatus) {
-                $('#response').text("Info received!");
-                $.each(json, function(i, value) {
-                    $('#doctorName').append($('<option>').text(value));
-                });
+
+                if (activeId == "specialization" || activeId == "doctor" || activeId == "date") {
+                    $('#response').text("Info received!");
+                }
+
+                if (activeId == "specialization") {
+                    $.each(json, function(i, value) {
+                        $('#fio').append($('<option>').text(value.fio).attr('doctorId', value.doctorId));
+                    });
+                }
+
+                if (activeId == "doctor") {
+                    $.each(json, function(i, value) {
+                        $('#dateSelect').append($('<option>').text(value));
+                    });
+                }
+
+                if (activeId == "date") {
+                    $.each(json, function(i, value) {
+                        $('#timeSelect').append($('<option>').text(value));
+                    });
+                }
             },
 
             error: function(json, textStatus) {
@@ -96,7 +130,7 @@
         <div class="col-md-3 pt-0">
           <div class="list-group list-group-flush account-settings-links">
             <a class="list-group-item list-group-item-action active" data-toggle="list" href="#specialization">Specialization</a>
-            <a class="list-group-item list-group-item-action" data-toggle="list" href="#doctor-name">Doctor name</a>
+            <a class="list-group-item list-group-item-action" data-toggle="list" href="#doctor">Doctor name</a>
             <a class="list-group-item list-group-item-action" data-toggle="list" href="#date">Ticket date</a>
             <a class="list-group-item list-group-item-action" data-toggle="list" href="#time">Ticket time</a>
           </div>
@@ -111,7 +145,6 @@
                 <div class="form-group">
                   <label class="form-label">Specialization</label>
                         <select class="custom-select" name ="specialization" id ="specialization">
-                            <option></option>
                                 <c:forEach items="${positionsList}" var="position">
                                     <option value="${position}"> ${position} </option>
                                 </c:forEach>
@@ -120,13 +153,12 @@
               </div>
             </div>
 
-            <div class="tab-pane fade" id="doctor-name">
+            <div class="tab-pane fade" id="doctor">
               <div class="card-body">
 
                 <div class="form-group">
                   <label class="form-label">Doctor name</label>
-                        <select class="custom-select" value="" name ="doctorName" id ="doctorName">
-                            <option></option>
+                        <select class="custom-select" name ="fio" id ="fio" doctorId="">
                         </select>
                 </div>
               </div>
@@ -136,10 +168,8 @@
               <div class="card-body pb-2">
 
                 <div class="form-group">
-                  <label class="form-label">Ticket date in format dd/MM/yyyy</label>
-                  <select class="custom-select" name = "date" id = "date">
-                    <option></option>
-                    <option>Option</option>
+                  <label class="form-label">Ticket date</label>
+                  <select class="custom-select" name = "dateSelect" id = "dateSelect">
                   </select>
                 </div>
               </div>
@@ -149,10 +179,8 @@
               <div class="card-body pb-2">
 
                 <div class="form-group">
-                  <label class="form-label">Ticket time in format HH:mm</label>
-                        <select class="custom-select" value="" name ="time" id ="time">
-                            <option></option>
-                            <option>Option 1</option>
+                  <label class="form-label">Ticket time</label>
+                        <select class="custom-select" value="" name ="timeSelect" id ="timeSelect">
                         </select>
                 </div>
 

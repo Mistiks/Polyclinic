@@ -10,7 +10,7 @@ public class Talon implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(name = "talon_id")
     private Integer id;
 
     @Column(name = "user_id")
@@ -23,12 +23,19 @@ public class Talon implements Serializable {
     private Integer doctorId;
 
     @ManyToOne
-    @JoinColumn(name="id", nullable=false, insertable = false, updatable = false)
+    @JoinColumn(name="user_id", insertable = false, updatable = false)
     private User user;
 
     public Talon() {}
 
     public Talon(Integer userId, LocalDateTime visitTime, Integer doctorId) {
+        this.userId = userId;
+        this.visitTime = visitTime;
+        this.doctorId = doctorId;
+    }
+
+    public Talon(Integer id, Integer userId, LocalDateTime visitTime, Integer doctorId) {
+        this.id = id;
         this.userId = userId;
         this.visitTime = visitTime;
         this.doctorId = doctorId;

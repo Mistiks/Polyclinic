@@ -29,9 +29,14 @@ registerData.password = $("#floatingPassword").val();
       dataType: "json",
       data: JSON.stringify(registerData),
       contentType: 'application/json',
-                success: function(responseData) {
-                  window.location.href = responseData.redirect;
+          statusCode: {
+            301: function() {
+                window.location.href = "${pageContext.request.contextPath}/home";
                 }
+            },
+          error: function(data) {
+            $('#error').text(data.responseText);
+          }
     })
 }
 </script>
@@ -56,10 +61,9 @@ registerData.password = $("#floatingPassword").val();
     <button class="w-100 btn btn-lg btn-primary" type="button" onclick = "sendForm();">Sign up</button>
     </div>
   </form>
-  <h2 class="h5 mb-3 fw-normal"><span style='color: red;'>${fail_sign_up}</span></h2>
+  <h2 class="h5 mb-3 fw-normal"><span style='color: red;' id = "error"></span></h2>
 </main>
 
-<c:remove var="fail_sign_up" scope="session" />
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
   </body>

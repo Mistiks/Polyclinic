@@ -97,9 +97,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .httpBasic()
-                .and().formLogin()
-                .loginPage("/signIn")
-                .permitAll()
                 .and().oauth2Login()
                 .loginPage("/signIn")
                 .failureUrl("/signIn?error=true")

@@ -29,9 +29,14 @@
           dataType: "json",
           data: JSON.stringify(registerData),
           contentType: 'application/json',
-                    success: function(responseData) {
-                      window.location.href = responseData.redirect;
-                    }
+          statusCode: {
+            301: function() {
+                window.location.href = "${pageContext.request.contextPath}/home";
+                }
+            },
+          error: function() {
+            $('#error').text("Incorrect login or password!");
+          }
         })
     }
     </script>
@@ -57,10 +62,9 @@
     </div>
   </form>
   <a href="/polyclinic-1.0/oauth2/authorization/XDzPwoj9kUyv-GTn_cFcZHs4">Login with Google</a>
-  <h2 class="h5 mb-3 fw-normal"><span style='color: red;'>${fail_sign_in}</span></h2>
+  <h2 class="h5 mb-3 fw-normal"><span style='color: red;' id = "error"></span></h2>
 </main>
 
-<c:remove var="fail_sign_in" scope="session" />
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
   </body>

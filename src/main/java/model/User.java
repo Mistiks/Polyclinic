@@ -2,6 +2,7 @@ package model;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity(name = "User")
@@ -70,8 +71,8 @@ public class User implements Serializable {
     @OneToMany(mappedBy="user")
     private Set<MedCard> medcards;
 
-    @OneToMany(mappedBy="user")
-    private Set<Talon> talons;
+    @OneToMany(mappedBy="user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Talon> talons = new HashSet<>();
 
     public User() {}
 
