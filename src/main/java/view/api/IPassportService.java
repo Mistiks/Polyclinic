@@ -1,9 +1,9 @@
 package view.api;
 
-import java.time.LocalDate;
+import model.enums.Gender;
 
 public interface IPassportService {
 
     void add(int userId, String passportId, String passportNum, String country, String nationality, String birthDate,
-             String sex, String issueDate, String expireDate, String birth);
+             Gender sex, String issueDate, String expireDate, String birth);
 }

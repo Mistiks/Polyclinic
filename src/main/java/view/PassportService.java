@@ -1,6 +1,7 @@
 package view;
 
 import model.Passport;
+import model.enums.Gender;
 import storage.api.IPassportRepository;
 import view.api.IPassportService;
 
@@ -19,7 +20,7 @@ public class PassportService implements IPassportService {
 
     @Override
     public void add(int userId, String passportId, String passportNum, String country, String nationality, String birthDateString,
-                    String sex, String issueDateString, String expireDateString, String birth) {
+                    Gender sex, String issueDateString, String expireDateString, String birth) {
         LocalDate birthDate = LocalDate.parse(birthDateString, formatter);
         LocalDate issueDate = LocalDate.parse(issueDateString, formatter);
         LocalDate expireDate = LocalDate.parse(expireDateString, formatter);

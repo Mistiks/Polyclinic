@@ -1,5 +1,7 @@
 package model;
 
+import model.enums.Gender;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -31,8 +33,9 @@ public class Passport implements Serializable {
     @Column(name = "birth_date")
     private LocalDate birthDate;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "sex")
-    private String sex;
+    private Gender sex;
 
     @Column(name = "issue_date")
     private LocalDate issueDate;
@@ -44,12 +47,12 @@ public class Passport implements Serializable {
     private String birthCountry;
 
     @ManyToOne
-    @JoinColumn(name="id", nullable=false, insertable = false, updatable = false)
+    @JoinColumn(name="user_id", nullable=false, insertable = false, updatable = false)
     private User user;
 
     public Passport() {}
 
-    public Passport(int userId, String passportId, String passportNum, String country, String nationality, LocalDate birthDate, String sex, LocalDate issueDate, LocalDate expireDate, String birth) {
+    public Passport(int userId, String passportId, String passportNum, String country, String nationality, LocalDate birthDate, Gender sex, LocalDate issueDate, LocalDate expireDate, String birth) {
         this.userId = userId;
         this.passportId = passportId;
         this.passportNum = passportNum;
@@ -118,11 +121,11 @@ public class Passport implements Serializable {
         this.birthDate = birthDate;
     }
 
-    public String getSex() {
+    public Gender getSex() {
         return sex;
     }
 
-    public void setSex(String sex) {
+    public void setSex(Gender sex) {
         this.sex = sex;
     }
 

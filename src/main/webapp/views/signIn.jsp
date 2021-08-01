@@ -32,11 +32,11 @@
           statusCode: {
             301: function() {
                 window.location.href = "${pageContext.request.contextPath}/home";
+                },
+            400: function() {
+                $('#error').text("Incorrect login or password!");
                 }
-            },
-          error: function() {
-            $('#error').text("Incorrect login or password!");
-          }
+            }
         })
     }
     </script>

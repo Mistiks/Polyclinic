@@ -1,17 +1,7 @@
 package model.enums;
 
 public enum Role {
-    USER ("user"),
-    DOCTOR ("doctor"),
-    ADMIN ("admin");
-
-    private String role;
-
-    Role(String role) {
-        this.role = role;
+    USER,
+    DOCTOR,
+    ADMIN
     }
-
-    public String getRole() {
-        return role;
-    }
-}

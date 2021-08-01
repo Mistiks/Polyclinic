@@ -28,8 +28,9 @@ public class RootConfig {
      * @return object which implements IUserService interface
      */
     @Bean
-    public IUserService getUserService(IUserRepository repository, IHashCreator hashCreator) {
-        return new UserService(repository, hashCreator);
+    public IUserService getUserService(IUserRepository repository, IHashCreator hashCreator,
+                                       IPassportRepository passportRepository, IAddressRepository addressRepository) {
+        return new UserService(repository, passportRepository, addressRepository, hashCreator);
     }
 
     /**
@@ -78,6 +79,11 @@ public class RootConfig {
     @Bean
     public IDepartmentService getDepartmentService(IDepartmentRepository repository) {
         return new DepartmentService(repository);
+    }
+
+    @Bean
+    public ICountryService getCountryService(ICountryRepository repository) {
+        return new CountryService(repository);
     }
 
     @Bean

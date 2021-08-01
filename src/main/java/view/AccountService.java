@@ -74,12 +74,12 @@ public class AccountService implements IAccountService {
     @Override
     public void updatePassport(HashMap<String, String> info, HttpServletRequest request) {
         User user = (User) request.getSession().getAttribute(CURRENT_USER);
-        String gender = "";
+        Gender gender = Gender.UNKNOWN;
 
         if (info.get("sex").equals("Male")) {
-            gender = Gender.MALE.getGender();
-        } else if (info.get("sex").equals("Feale")) {
-            gender = Gender.FEMALE.getGender();
+            gender = Gender.MALE;
+        } else if (info.get("sex").equals("Female")) {
+            gender = Gender.FEMALE;
         }
 
         Passport passport = passportRepository.getByUserId(user.getId());

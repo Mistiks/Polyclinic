@@ -1,5 +1,8 @@
 package model;
 
+import model.enums.Role;
+import model.enums.Status;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
@@ -26,14 +29,16 @@ public class User implements Serializable {
     @Column(name = "login")
     private String login;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "status")
-    private String status;
+    private Status status;
 
     @Column(name = "phone_number")
     private String number;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "user_role")
-    private String role;
+    private Role role;
 
     @Column(name = "user_position")
     private String position;
@@ -78,16 +83,16 @@ public class User implements Serializable {
 
     public User(String login) {
         this.login = login;
-        this.status = "unverified";
-        this.role = "patient";
+        this.status = Status.UNVERIFIED;
+        this.role = Role.USER;
     }
 
     public User(String login, String id, String mail) {
         this.login = login;
         this.googleId = id;
         this.mail = mail;
-        this.status = "unverified";
-        this.role = "patient";
+        this.status = Status.UNVERIFIED;
+        this.role = Role.USER;
     }
 
     public Integer getId() {
@@ -130,11 +135,11 @@ public class User implements Serializable {
         this.login = login;
     }
 
-    public String getStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 
@@ -146,11 +151,11 @@ public class User implements Serializable {
         this.number = number;
     }
 
-    public String getRole() {
+    public Role getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(Role role) {
         this.role = role;
     }
 

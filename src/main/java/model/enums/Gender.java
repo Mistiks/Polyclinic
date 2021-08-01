@@ -1,6 +1,7 @@
 package model.enums;
 
 public enum Gender {
+    UNKNOWN ("unknown"),
     MALE ("male"),
     FEMALE ("female");
 

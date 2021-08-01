@@ -1,6 +1,7 @@
 package view.api;
 
 import model.User;
+import model.dto.UserProfileDTO;
 
 public interface IUserService {
 
@@ -22,4 +23,7 @@ public interface IUserService {
     void signUp(User user, String password);
 
     void signUpGoogle(User user);
+
+    UserProfileDTO getAllUserInfo(String username);
+    UserProfileDTO update(UserProfileDTO input);
 }

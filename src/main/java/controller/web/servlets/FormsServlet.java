@@ -1,5 +1,6 @@
 package controller.web.servlets;
 
+import model.enums.Gender;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -69,7 +70,7 @@ public class FormsServlet {
         String country = request.getParameter("country");
         String nationality = request.getParameter("nationality");
         String birthDate = request.getParameter("birthDate");
-        String sex = request.getParameter("sex");
+        Gender sex = Gender.valueOf(request.getParameter("sex"));
         String issueDate = request.getParameter("issueDate");
         String expireDate = request.getParameter("expireDate");
         String birthCountry = request.getParameter("birthCountry");
