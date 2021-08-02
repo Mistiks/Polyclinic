@@ -33,6 +33,8 @@
     <nav class="nav d-flex justify-content-between">
       <a class="p-2 link-secondary" href="profiles/showPage">Profile info</a>
       <a class="p-2 link-secondary" href="profiles/updatePage">Profile update</a>
+      <a class="p-2 link-secondary" href="profiles/createPage">Profile creation</a>
+      <a class="p-2 link-secondary" href="profiles/deletePage">Profile deletion</a>
     </nav>
   </div>
 </div>

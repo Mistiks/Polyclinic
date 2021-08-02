@@ -1,6 +1,8 @@
 package controller.web.servlets;
 
 import model.Country;
+import model.User;
+import model.dto.LoginData;
 import model.dto.UserProfileDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -60,6 +62,37 @@ public class AdminServlet {
         try {
             UserProfileDTO updated = userService.update(userProfileDTO);
             return new ResponseEntity<>(updated, HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping(value = "/profiles/createPage")
+    public String loadCreatePage() {
+        return "profilesCreate";
+    }
+
+    @PostMapping(value = "/profiles/create")
+    public ResponseEntity<?> createProfile(@RequestBody LoginData loginData) {
+        try {
+            User user = new User(loginData.getUsername());
+            userService.signUp(user, loginData.getPassword());
+            return new ResponseEntity<>(HttpStatus.CREATED);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping(value = "/profiles/deletePage")
+    public String loadDeletePage() {
+        return "profilesDelete";
+    }
+
+    @DeleteMapping(value = "/profiles/delete")
+    public ResponseEntity<?> deleteProfile(@RequestBody LoginData loginData) {
+        try {
+            userService.delete(loginData.getUsername());
+            return new ResponseEntity<>(HttpStatus.OK);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }

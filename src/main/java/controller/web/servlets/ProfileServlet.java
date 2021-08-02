@@ -1,91 +1,43 @@
 package controller.web.servlets;
 
+import model.dto.UserDTO;
+import model.dto.UserProfileDTO;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import utils.api.IJsonWriter;
-import view.api.IAccountService;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+import view.api.ICountryService;
+import view.api.IUserService;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.HashMap;
 
 @Controller
 @RequestMapping(value = "/profile")
 public class ProfileServlet {
 
-    private final IJsonWriter jsonWriter;
-    private final IAccountService accountService;
+    private final IUserService userService;
+    private final ICountryService countryService;
 
-    public ProfileServlet(IJsonWriter jsonWriter, IAccountService accountService) {
-        this.jsonWriter = jsonWriter;
-        this.accountService = accountService;
+    public ProfileServlet(IUserService userService, ICountryService countryService) {
+        this.userService = userService;
+        this.countryService = countryService;
     }
 
     @GetMapping
-    public String doGet() {
+    public String doGet(Model model) {
+        model.addAttribute("countries", countryService.getAll());
         return "profile";
     }
 
-    @PostMapping(value = "/account-general")
-    public void updateGeneral(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        HashMap<String, String> receivedData = jsonWriter.read(request);
-        HashMap<String, String> result = new HashMap<>();
-
+    @PostMapping
+    @ResponseBody
+    public ResponseEntity<?> updateProfile(@RequestBody UserDTO userDTO, HttpServletRequest request) {
         try {
-            accountService.updateGeneralInfo(receivedData, request);
-            result.put("success", "Information saved!");
+            userService.update(userDTO, request);
+            return new ResponseEntity<>(HttpStatus.OK);
         } catch (IllegalArgumentException e) {
-            result.put("error", e.getMessage());
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-
-        jsonWriter.write(result, response);
-    }
-
-    @PostMapping(value = "/account-password")
-    public void updatePassword(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        HashMap<String, String> receivedData = jsonWriter.read(request);
-        HashMap<String, String> result = new HashMap<>();
-
-        try {
-            accountService.updatePassword(receivedData, request);
-            result.put("success", "Information saved!");
-        } catch (IllegalArgumentException e) {
-            result.put("error", e.getMessage());
-        }
-
-        jsonWriter.write(result, response);
-    }
-
-    @PostMapping(value = "/account-address")
-    public void updateAddress(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        HashMap<String, String> receivedData = jsonWriter.read(request);
-        HashMap<String, String> result = new HashMap<>();
-
-        try {
-            accountService.updateAddress(receivedData, request);
-            result.put("success", "Information saved!");
-        } catch (IllegalArgumentException e) {
-            result.put("error", e.getMessage());
-        }
-
-        jsonWriter.write(result, response);
-    }
-
-    @PostMapping(value = "/account-passport")
-    public void updatePassport(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        HashMap<String, String> receivedData = jsonWriter.read(request);
-        HashMap<String, String> result = new HashMap<>();
-
-        try {
-            accountService.updatePassport(receivedData, request);
-            result.put("success", "Information saved!");
-        } catch (IllegalArgumentException e) {
-            result.put("error", e.getMessage());
-        }
-
-        jsonWriter.write(result, response);
     }
 }

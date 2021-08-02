@@ -24,7 +24,7 @@
       <div class="row flex-nowrap justify-content-between align-items-center">
         <div class="col-4 pt-1">
             <c:choose>
-                <c:when test="${currentUser.role eq 'admin'}">
+                <c:when test="${currentUser.role eq 'ADMIN'}">
                     <a class="blog-header-logo text-dark" href="dashboard">IPolyclinic</a>
                 </c:when>
                 <c:otherwise>

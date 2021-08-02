@@ -4,17 +4,12 @@ import model.enums.Gender;
 import model.enums.Role;
 import model.enums.Status;
 
-public class UserProfileDTO {
+public class UserDTO {
     private String firstName;
     private String surname;
     private String patronymic;
     private String username;
-    private Status userStatus;
     private String number;
-    private Role role;
-    private String position;
-    private String pastPosition;
-    private int cabinetNum;
     private String mail;
     private String city;
     private String street;
@@ -66,52 +61,12 @@ public class UserProfileDTO {
         this.username = username;
     }
 
-    public Status getUserStatus() {
-        return userStatus;
-    }
-
-    public void setUserStatus(Status userStatus) {
-        this.userStatus = userStatus;
-    }
-
     public String getNumber() {
         return number;
     }
 
     public void setNumber(String number) {
         this.number = number;
-    }
-
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
-
-    public String getPosition() {
-        return position;
-    }
-
-    public void setPosition(String position) {
-        this.position = position;
-    }
-
-    public String getPastPosition() {
-        return pastPosition;
-    }
-
-    public void setPastPosition(String pastPosition) {
-        this.pastPosition = pastPosition;
-    }
-
-    public int getCabinetNum() {
-        return cabinetNum;
-    }
-
-    public void setCabinetNum(int cabinetNum) {
-        this.cabinetNum = cabinetNum;
     }
 
     public String getMail() {

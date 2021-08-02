@@ -18,11 +18,9 @@
     function sendForm() {
     $('#response').text("");
     $('#responseError').text("");
-    var $activeTab = $('.tab-content .tab-pane.active');
-    var activeId = $activeTab.attr('id');
     var sendData = new Object();
     sendData.username = $("#username").val();
-    sendData.name = $("#name").val();
+    sendData.firstName = $("#name").val();
     sendData.surname = $("#surname").val();
     sendData.patronymic = $("#patronymic").val();
     sendData.mail = $("#mail").val();
@@ -44,17 +42,17 @@
     sendData.birthCountry = $("#birthCountry").val();
     sendData.birthDate = $("#birthDate").val();
         $.ajax({
-          url: "${pageContext.request.contextPath}/profile/" + activeId,
+          url: "${pageContext.request.contextPath}/profile",
           type: "post",
           dataType: "json",
           data: JSON.stringify(sendData),
           contentType: 'application/json',
-            success: function(responseData) {
-                if (responseData.success !== null) {
-                    $('#response').text(responseData.success);
-                }
-                if (responseData.error !== null) {
-                    $('#responseError').text(responseData.error);
+          statusCode: {
+            200: function() {
+                $('#response').text("User updated!");
+                },
+            400: function() {
+                $('#responseError').text("Error while updating. Check your inputs!");
                 }
             }
         })
@@ -93,8 +91,8 @@
       Account settings
     </h4>
 
-    <div class="SuccessAnswer" id="response"></div>
-    <div class="ErrorAnswer"id="responseError"><p></div>
+    <div class="SuccessAnswer" ><span style='color: green;' id="response"></span></div>
+    <div class="ErrorAnswer"><span style='color: red;' id="responseError"></span></div>
 
     <div class="card overflow-hidden">
       <div class="row no-gutters row-bordered row-border-light">
@@ -115,32 +113,32 @@
 
                 <div class="form-group">
                   <label class="form-label">Username</label>
-                  <input type="text" class="form-control" value="" id ="username" name ="username">
+                  <input type="text" class="form-control" id ="username" name ="username">
                 </div>
 
                 <div class="form-group">
                   <label class="form-label">Name</label>
-                  <input type="text" class="form-control" value="" name ="name" id ="name">
+                  <input type="text" class="form-control" name ="name" id ="name">
                 </div>
 
                 <div class="form-group">
                   <label class="form-label">Surname</label>
-                  <input type="text" class="form-control" value="" name ="surname" id ="surname">
+                  <input type="text" class="form-control" name ="surname" id ="surname">
                 </div>
 
                 <div class="form-group">
                   <label class="form-label">Patronymic</label>
-                  <input type="text" class="form-control" value="" name ="patronymic" id ="patronymic">
+                  <input type="text" class="form-control" name ="patronymic" id ="patronymic">
                 </div>
 
                 <div class="form-group">
                   <label class="form-label">E-mail</label>
-                  <input type="text" class="form-control" value="" name ="mail" id ="mail">
+                  <input type="text" class="form-control" name ="mail" id ="mail">
                 </div>
 
                 <div class="form-group">
                   <label class="form-label">Phone number</label>
-                  <input type="text" class="form-control" value="" name ="number" id ="number">
+                  <input type="text" class="form-control" name ="number" id ="number">
                 </div>
 
               </div>
@@ -172,33 +170,31 @@
 
                 <div class="form-group">
                   <label class="form-label">Country</label>
-                  <select class="custom-select" name = "residenceCountry" id = "residenceCountry">
-                    <option>USA</option>
-                    <option selected="">Belarus</option>
-                    <option>UK</option>
-                    <option>Germany</option>
-                    <option>France</option>
-                  </select>
+                        <select class="custom-select" name ="residenceCountry" id ="residenceCountry" value = "">
+                                <c:forEach items="${countries}" var="country">
+                                    <option value="${country.name}">${country.name}</option>
+                                </c:forEach>
+                        </select>
                 </div>
 
                 <div class="form-group">
                   <label class="form-label">City</label>
-                  <input type="text" class="form-control" value="" name ="city" id ="city">
+                  <input type="text" class="form-control" name ="city" id ="city">
                 </div>
 
                 <div class="form-group">
                   <label class="form-label">Street</label>
-                  <input type="text" class="form-control" value="" name ="street" id ="street">
+                  <input type="text" class="form-control" name ="street" id ="street">
                 </div>
 
                 <div class="form-group">
                   <label class="form-label">House</label>
-                  <input type="text" class="form-control" value="" name ="house" id ="house">
+                  <input type="text" class="form-control" name ="house" id ="house">
                 </div>
 
                 <div class="form-group">
                   <label class="form-label">Flat</label>
-                  <input type="text" class="form-control" value="" name ="flat" id ="flat">
+                  <input type="text" class="form-control" name ="flat" id ="flat">
                 </div>
               </div>
             </div>
@@ -210,17 +206,21 @@
 
                 <div class="form-group">
                   <label class="form-label">Passport Id</label>
-                  <input type="text" class="form-control" value="" name ="passportId" id ="passportId">
+                  <input type="text" class="form-control" name ="passportId" id ="passportId">
                 </div>
 
                 <div class="form-group">
                   <label class="form-label">Passport Number</label>
-                  <input type="text" class="form-control" value="" name ="passportNumber" id ="passportNumber">
+                  <input type="text" class="form-control" name ="passportNumber" id ="passportNumber">
                 </div>
 
                 <div class="form-group">
                   <label class="form-label">Passport Country</label>
-                  <input type="text" class="form-control" value="" name ="passportCountry" id ="passportCountry">
+                        <select class="custom-select" name ="passportCountry" id ="passportCountry" value = "">
+                                <c:forEach items="${countries}" var="country">
+                                    <option value="${country.name}">${country.name}</option>
+                                </c:forEach>
+                        </select>
                 </div>
 
                 <div class="form-group">
@@ -230,10 +230,10 @@
 
                 <div class="form-group">
                   <label class="form-label">Gender</label>
-                        <select class="custom-select" value="" name ="sex" id ="sex">
-                            <option></option>
-                            <option>Male</option>
-                            <option>Female</option>
+                        <select class="custom-select" name ="sex" id ="sex">
+                            <option>UNKNOWN</option>
+                            <option>MALE</option>
+                            <option>FEMALE</option>
                         </select>
                 </div>
 
@@ -254,7 +254,11 @@
 
                 <div class="form-group">
                   <label class="form-label">Country of birth</label>
-                  <input type="text" class="form-control" value="" name ="birthCountry" id ="birthCountry">
+                        <select class="custom-select" name ="birthCountry" id ="birthCountry" value = "">
+                                <c:forEach items="${countries}" var="country">
+                                    <option value="${country.name}">${country.name}</option>
+                                </c:forEach>
+                        </select>
                 </div>
 
               </div>

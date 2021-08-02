@@ -85,6 +85,8 @@
     <nav class="nav d-flex justify-content-between">
         <a class="p-2 link-secondary" href="showPage">Profile info</a>
         <a class="p-2 link-secondary" href="updatePage">Profile update</a>
+        <a class="p-2 link-secondary" href="createPage">Profile creation</a>
+        <a class="p-2 link-secondary" href="deletePage">Profile deletion</a>
     </nav>
   </div>
 </div>

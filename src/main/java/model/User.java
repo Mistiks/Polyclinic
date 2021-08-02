@@ -76,7 +76,7 @@ public class User implements Serializable {
     @OneToMany(mappedBy="user")
     private Set<MedCard> medcards;
 
-    @OneToMany(mappedBy="user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy="user")
     private Set<Talon> talons = new HashSet<>();
 
     public User() {}

@@ -33,6 +33,8 @@
     <nav class="nav d-flex justify-content-between">
         <a class="p-2 link-secondary" href="showPage">Profile info</a>
         <a class="p-2 link-secondary" href="updatePage">Profile update</a>
+        <a class="p-2 link-secondary" href="createPage">Profile creation</a>
+        <a class="p-2 link-secondary" href="deletePage">Profile deletion</a>
     </nav>
   </div>
 </div>
@@ -81,7 +83,7 @@
 
                 <div class="form-group">
                   <label class="form-label">Name</label>
-                  <output type="text" class="form-control" name ="name" id ="name">
+                  <input type="text" class="form-control" name ="name" id ="name">
                 </div>
 
                 <div class="form-group">
@@ -106,7 +108,7 @@
 
                 <div class="form-group">
                   <label class="form-label">Status</label>
-                        <select class="custom-select" name ="status" id ="status" value = "">
+                        <select class="custom-select" name ="status" id ="status">
                             <option>UNVERIFIED</option>
                             <option>VERIFIED</option>
                         </select>

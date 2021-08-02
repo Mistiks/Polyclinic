@@ -25,6 +25,11 @@ public interface ITalonRepository extends JpaRepository<Talon, Integer> {
     List<Talon> findAllByTalonDate(Integer id, LocalDate date);
 
     @Query(
+            value = "SELECT * FROM polyclinic.talon WHERE talon.user_id = ?1",
+            nativeQuery = true)
+    List<Talon> findAllByUserId(Integer userId);
+
+    @Query(
             value = "SELECT * FROM polyclinic.talon " +
                     "WHERE talon.doctor_id = ?1 and talon.visit_time = ?2 ORDER BY talon.visit_time",
             nativeQuery = true)

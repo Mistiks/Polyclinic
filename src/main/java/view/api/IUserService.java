@@ -1,7 +1,10 @@
 package view.api;
 
 import model.User;
+import model.dto.UserDTO;
 import model.dto.UserProfileDTO;
+
+import javax.servlet.http.HttpServletRequest;
 
 public interface IUserService {
 
@@ -26,4 +29,6 @@ public interface IUserService {
 
     UserProfileDTO getAllUserInfo(String username);
     UserProfileDTO update(UserProfileDTO input);
+    void delete(String username);
+    void update (UserDTO input, HttpServletRequest request);
 }
