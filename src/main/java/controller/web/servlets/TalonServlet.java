@@ -96,9 +96,13 @@ public class TalonServlet {
         LocalTime requestTime = LocalTime.parse(talonRequest.getTime(), timeFormatter);
         LocalDateTime localDateTime = requestDate.atTime(requestTime);
         Talon talon = talonRepository.getTalon(talonRequest.getDoctorId(), localDateTime);
-        talon.setUserId(user.getId());
-        talonRepository.save(talon);
 
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        if (talon != null) {
+            talon.setUserId(user.getId());
+            talonRepository.save(talon);
+            return new ResponseEntity<>(HttpStatus.CREATED);
+        } else {
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        }
     }
 }

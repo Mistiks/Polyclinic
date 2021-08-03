@@ -102,7 +102,7 @@ public class RootConfig {
     }
 
     @Bean
-    public ITalonService getTalonService(ITalonRepository repository) {
-        return new TalonService(repository);
+    public ITalonService getTalonService(ITalonRepository repository, IUserService userService) {
+        return new TalonService(userService, repository);
     }
 }

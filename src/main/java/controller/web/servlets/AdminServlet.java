@@ -1,6 +1,5 @@
 package controller.web.servlets;
 
-import model.Country;
 import model.User;
 import model.dto.LoginData;
 import model.dto.UserProfileDTO;

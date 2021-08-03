@@ -20,7 +20,7 @@ public interface ITalonRepository extends JpaRepository<Talon, Integer> {
 
     @Query(
             value = "SELECT * FROM polyclinic.talon " +
-                    "WHERE talon.doctor_id = ?1 and date(talon.visit_time) = ?2 ORDER BY talon.visit_time",
+                    "WHERE talon.doctor_id = ?1 and date(talon.visit_time) = ?2 and talon.user_id IS NULL ORDER BY talon.visit_time",
             nativeQuery = true)
     List<Talon> findAllByTalonDate(Integer id, LocalDate date);
 
@@ -31,7 +31,19 @@ public interface ITalonRepository extends JpaRepository<Talon, Integer> {
 
     @Query(
             value = "SELECT * FROM polyclinic.talon " +
-                    "WHERE talon.doctor_id = ?1 and talon.visit_time = ?2 ORDER BY talon.visit_time",
+                    "WHERE talon.doctor_id = ?1 and talon.visit_time = ?2 and talon.user_id IS NULL ORDER BY talon.visit_time",
             nativeQuery = true)
     Talon getTalon(Integer id, LocalDateTime dateTime);
+
+    @Query(
+            value = "SELECT * FROM polyclinic.talon " +
+                    "WHERE talon.doctor_id = ?1 and talon.visit_time = ?2",
+            nativeQuery = true)
+    Talon getTalonForDeletion(Integer id, LocalDateTime dateTime);
+
+    @Query(
+            value = "SELECT * FROM polyclinic.talon " +
+                    "WHERE talon.doctor_id = ?1 and talon.visit_time = ?2 and talon.user_id IS NOT NULL",
+            nativeQuery = true)
+    Talon isTalonBooked(Integer id, LocalDateTime dateTime);
 }
