@@ -39,11 +39,17 @@ public interface ITalonRepository extends JpaRepository<Talon, Integer> {
             value = "SELECT * FROM polyclinic.talon " +
                     "WHERE talon.doctor_id = ?1 and talon.visit_time = ?2",
             nativeQuery = true)
-    Talon getTalonForDeletion(Integer id, LocalDateTime dateTime);
+    Talon getTalonForDeleteOrUpdate(Integer id, LocalDateTime dateTime);
 
     @Query(
             value = "SELECT * FROM polyclinic.talon " +
                     "WHERE talon.doctor_id = ?1 and talon.visit_time = ?2 and talon.user_id IS NOT NULL",
             nativeQuery = true)
     Talon isTalonBooked(Integer id, LocalDateTime dateTime);
+
+    @Query(
+            value = "SELECT * FROM polyclinic.talon " +
+                    "WHERE talon.doctor_id = ?1 and talon.user_id IS NOT NULL",
+            nativeQuery = true)
+    List<Talon> findByDoctorIdOrderByVisitTime(Integer doctorId);
 }

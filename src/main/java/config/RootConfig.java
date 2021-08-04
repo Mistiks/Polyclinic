@@ -5,9 +5,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import storage.api.*;
 import utils.HashCreator;
-import utils.JsonWriter;
 import utils.api.IHashCreator;
-import utils.api.IJsonWriter;
 import view.*;
 import view.api.*;
 
@@ -47,11 +45,6 @@ public class RootConfig {
     @Bean
     public IHashCreator getHashCreator() {
         return new HashCreator();
-    }
-
-    @Bean
-    public IJsonWriter getJsonWriter() {
-        return new JsonWriter();
     }
 
     @Bean

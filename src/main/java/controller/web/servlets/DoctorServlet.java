@@ -1,10 +1,10 @@
 package controller.web.servlets;
 
 import model.dto.Appointment;
-import model.dto.UserProfileDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import view.api.ITalonService;
 import view.api.IUserService;
@@ -24,17 +24,17 @@ public class DoctorServlet {
 
     @GetMapping
     public String doGet() {
-        return "doctorDashboard";
+        return "appointments/doctorDashboard";
     }
 
     @GetMapping(value = "/appointments")
     public String getAppointments() {
-        return "appointmentsMenu";
+        return "appointments/appointmentsMenu";
     }
 
     @GetMapping(value = "/appointments/createPage")
     public String loadCreatePage() {
-        return "appointmentCreate";
+        return "appointments/appointmentCreate";
     }
 
     @PostMapping(value = "/appointments/create")
@@ -50,7 +50,7 @@ public class DoctorServlet {
 
     @GetMapping(value = "/appointments/deletePage")
     public String loadDeletePage() {
-        return "appointmentDelete";
+        return "appointments/appointmentDelete";
     }
 
     @DeleteMapping(value = "/appointments/delete")
@@ -62,5 +62,27 @@ public class DoctorServlet {
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @GetMapping(value = "/appointments/updatePage")
+    public String loadUpdatePage() {
+        return "appointments/appointmentUpdate";
+    }
+
+    @PutMapping(value = "/appointments/update")
+    @ResponseBody
+    public ResponseEntity<?> updateAppointment(@RequestBody Appointment appointment, HttpServletRequest request) {
+        try {
+            talonService.update(appointment,request);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping(value = "/appointments/show")
+    public String loadShowPage(Model model, HttpServletRequest request) {
+        model.addAttribute("appointments", talonService.getAllTalons(request));
+        return "appointments/appointmentShow";
     }
 }

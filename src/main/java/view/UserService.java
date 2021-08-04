@@ -55,6 +55,11 @@ public class UserService implements IUserService {
     }
 
     @Override
+    public User getById(Integer id) {
+        return this.repository.getById(id);
+    }
+
+    @Override
     public User getByGoogleId(String id) {
         return this.repository.getByGoogleId(id);
     }

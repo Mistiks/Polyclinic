@@ -3,18 +3,21 @@ package view;
 import model.Talon;
 import model.User;
 import model.dto.Appointment;
+import model.dto.Appointments;
 import model.enums.TalonTime;
 import storage.api.ITalonRepository;
-import storage.api.IUserRepository;
 import view.api.ITalonService;
 import view.api.IUserService;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TalonService implements ITalonService {
     private final IUserService userService;
@@ -80,16 +83,62 @@ public class TalonService implements ITalonService {
 
         try {
             visitDateTime = LocalDateTime.parse(visitTime, formatter);
-        } catch (DateTimeParseException e) {
+        } catch (DateTimeParseException | NullPointerException e) {
             throw new IllegalArgumentException("Entered time is wrong!");
         }
+
         User doctor = (User) request.getSession().getAttribute(CURRENT_USER);
-        Talon talon = repository.getTalonForDeletion(doctor.getDoctorId(), visitDateTime);
+        Talon talon = repository.getTalonForDeleteOrUpdate(doctor.getDoctorId(), visitDateTime);
 
         if (talon != null) {
             repository.delete(talon);
         } else {
             throw new IllegalArgumentException("Talon isn't exist!");
         }
+    }
+
+    @Override
+    public void update(Appointment appointment, HttpServletRequest request) {
+        String visitTime = appointment.getDateTime();
+        LocalDateTime visitDateTime;
+
+        try {
+            visitDateTime = LocalDateTime.parse(visitTime, formatter);
+        } catch (DateTimeParseException | NullPointerException e) {
+            throw new IllegalArgumentException("Entered time is wrong!");
+        }
+
+        User doctor = (User) request.getSession().getAttribute(CURRENT_USER);
+        Talon talon = repository.getTalonForDeleteOrUpdate(doctor.getDoctorId(), visitDateTime);
+
+        if (talon != null) {
+            User user = userService.get(appointment.getUsername());
+
+            if (user != null) {
+                talon.setUserId(user.getId());
+            } else {
+                talon.setUserId(null);
+            }
+
+            repository.save(talon);
+        } else {
+            throw new IllegalArgumentException("Talon isn't exist!");
+        }
+    }
+
+    @Override
+    @Transactional
+    public List<Appointments> getAllTalons(HttpServletRequest request) {
+        User doctor = (User) request.getSession().getAttribute(CURRENT_USER);
+        User user;
+        List<Appointments> result = new ArrayList<>();
+        List<Talon> talonList = repository.findByDoctorIdOrderByVisitTime(doctor.getDoctorId());
+
+        for (Talon talon : talonList) {
+            user = userService.getById(talon.getUserId());
+            result.add(new Appointments(user.getLogin(), talon.getVisitTime()));
+        }
+
+        return result;
     }
 }

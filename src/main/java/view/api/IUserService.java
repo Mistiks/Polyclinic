@@ -16,6 +16,8 @@ public interface IUserService {
      */
     User get(String login);
 
+    User getById(Integer id);
+
     User getByGoogleId(String id);
 
     /**

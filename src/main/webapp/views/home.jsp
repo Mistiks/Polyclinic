@@ -27,6 +27,9 @@
                 <c:when test="${currentUser.role eq 'ADMIN'}">
                     <a class="blog-header-logo text-dark" href="dashboard">IPolyclinic</a>
                 </c:when>
+                <c:when test="${currentUser.role eq 'DOCTOR'}">
+                    <a class="blog-header-logo text-dark" href="doctorDashboard">IPolyclinic</a>
+                </c:when>
                 <c:otherwise>
                     <a class="blog-header-logo text-dark" href="#">IPolyclinic</a>
                 </c:otherwise>

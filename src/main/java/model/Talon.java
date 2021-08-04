@@ -1,5 +1,7 @@
 package model;
 
+import org.springframework.lang.Nullable;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -14,6 +16,7 @@ public class Talon implements Serializable {
     private Integer id;
 
     @Column(name = "user_id")
+    @Nullable
     private Integer userId;
 
     @Column(name = "visit_time")
