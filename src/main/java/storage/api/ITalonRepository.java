@@ -1,6 +1,7 @@
 package storage.api;
 
 import model.Talon;
+import model.dto.Appointments;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -48,8 +49,7 @@ public interface ITalonRepository extends JpaRepository<Talon, Integer> {
     Talon isTalonBooked(Integer id, LocalDateTime dateTime);
 
     @Query(
-            value = "SELECT * FROM polyclinic.talon " +
-                    "WHERE talon.doctor_id = ?1 and talon.user_id IS NOT NULL",
-            nativeQuery = true)
-    List<Talon> findByDoctorIdOrderByVisitTime(Integer doctorId);
+            value = "SELECT new model.dto.Appointments(u.login, t.visitTime) FROM Talon t " +
+                    "inner join User u ON u.id = t.userId WHERE t.doctorId = ?1 and t.userId IS NOT NULL")
+    List<Appointments> findByDoctorIdOrderByVisitTime(Integer doctorId);
 }

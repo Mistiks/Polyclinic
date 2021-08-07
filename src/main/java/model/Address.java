@@ -30,11 +30,15 @@ public class Address implements Serializable {
     @Column(name = "residence_country")
     private String residenceCountry;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="user_id", nullable=false, insertable = false, updatable = false)
+    @ManyToOne
+    @JoinColumn(name="user_id", insertable = false, updatable = false)
     private User user;
 
     public Address() {}
+
+    public Address(int userId) {
+        this.userId = userId;
+    }
 
     public Address(int id, String city, String street, String house, String flat, String country) {
         this.userId = id;

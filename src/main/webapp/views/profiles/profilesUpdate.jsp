@@ -276,7 +276,7 @@
         sendData.expireDate = $("#expireDate").val();
         sendData.birthCountry = $("#birthCountry :selected").val();
         sendData.birthDate = $("#birthDate").val();
-        sendData.status = $("#status :selected").val();
+        sendData.userStatus = $("#status :selected").val();
         sendData.role = $("#role :selected").val();
         sendData.position = $("#position").val();
         sendData.pastPosition = $("#pastPosition").val();
@@ -300,7 +300,7 @@
                 document.getElementById("patronymic").value = receivedData.patronymic;
                 document.getElementById("mail").value = receivedData.mail;
                 document.getElementById("number").value = receivedData.number;
-                document.getElementById("status").value = receivedData.status;
+                document.getElementById("status").value = receivedData.userStatus;
                 document.getElementById("role").value = receivedData.role;
                 document.getElementById("position").value = receivedData.position;
                 document.getElementById("pastPosition").value = receivedData.pastPosition;

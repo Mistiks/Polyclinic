@@ -30,17 +30,17 @@ public class AdminServlet {
 
     @GetMapping(value = "/profiles")
     public String getProfiles() {
-        return "profilesMenu";
+        return "profiles/profilesMenu";
     }
 
     @GetMapping(value = "/profiles/showPage")
     public String getProfilesShow() {
-        return "profilesShow";
+        return "profiles/profilesShow";
     }
 
     @GetMapping(value = {"/profiles/show/{username}", "/profiles/update/{username}"}, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public ResponseEntity<UserProfileDTO> getProfileInfo(@PathVariable(required = false) String username) {
+    public ResponseEntity<UserProfileDTO> getProfileInfo(@PathVariable String username) {
         try {
             UserProfileDTO userProfileDTO = userService.getAllUserInfo(username);
             return new ResponseEntity<>(userProfileDTO, HttpStatus.OK);
@@ -52,7 +52,7 @@ public class AdminServlet {
     @GetMapping(value = "/profiles/updatePage")
     public String loadUpdatePage(Model model) {
         model.addAttribute("countries", countryService.getAll());
-        return "profilesUpdate";
+        return "profiles/profilesUpdate";
     }
 
     @PutMapping(value = "/profiles/update/{username}")
@@ -68,7 +68,7 @@ public class AdminServlet {
 
     @GetMapping(value = "/profiles/createPage")
     public String loadCreatePage() {
-        return "profilesCreate";
+        return "profiles/profilesCreate";
     }
 
     @PostMapping(value = "/profiles/create")
@@ -84,7 +84,7 @@ public class AdminServlet {
 
     @GetMapping(value = "/profiles/deletePage")
     public String loadDeletePage() {
-        return "profilesDelete";
+        return "profiles/profilesDelete";
     }
 
     @DeleteMapping(value = "/profiles/delete")

@@ -95,7 +95,6 @@ public class UserService implements IUserService {
             throw new IllegalArgumentException("No user!");
         }
 
-
         Passport passport = passportRepository.getByUserId(user.getId());
         Address address = addressRepository.getByUserId(user.getId());
         return createUserProfileDTO(user, passport, address);
@@ -181,11 +180,11 @@ public class UserService implements IUserService {
         Address address = addressRepository.getByUserId(user.getId());
 
         if (passport == null) {
-            passport = new Passport();
+            passport = new Passport(user.getId());
         }
 
         if (address == null) {
-            address = new Address();
+            address = new Address(user.getId());
         }
 
         user.setFirstName(input.getFirstName());

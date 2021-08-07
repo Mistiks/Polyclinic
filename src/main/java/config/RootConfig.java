@@ -58,13 +58,6 @@ public class RootConfig {
     }
 
     @Bean
-    public IAccountService getAccountService(IUserService userService, IUserRepository repository,
-                                             IHashCreator hashCreator, IAddressRepository addressRepository,
-                                             IPassportRepository passportRepository) {
-        return new AccountService(repository, addressRepository, passportRepository, userService, hashCreator);
-    }
-
-    @Bean
     public IPassportService getPassportService(IPassportRepository repository) {
         return new PassportService(repository);
     }
@@ -90,8 +83,8 @@ public class RootConfig {
     }
 
     @Bean
-    public IMedCardService getMedCardService(IMedCardRepository repository) {
-        return new MedCardService(repository);
+    public IMedCardService getMedCardService(IMedCardRepository repository, IUserService userService) {
+        return new MedCardService(repository, userService);
     }
 
     @Bean

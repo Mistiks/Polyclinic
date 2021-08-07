@@ -16,7 +16,6 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class TalonService implements ITalonService {
@@ -130,15 +129,7 @@ public class TalonService implements ITalonService {
     @Transactional
     public List<Appointments> getAllTalons(HttpServletRequest request) {
         User doctor = (User) request.getSession().getAttribute(CURRENT_USER);
-        User user;
-        List<Appointments> result = new ArrayList<>();
-        List<Talon> talonList = repository.findByDoctorIdOrderByVisitTime(doctor.getDoctorId());
 
-        for (Talon talon : talonList) {
-            user = userService.getById(talon.getUserId());
-            result.add(new Appointments(user.getLogin(), talon.getVisitTime()));
-        }
-
-        return result;
+        return repository.findByDoctorIdOrderByVisitTime(doctor.getDoctorId());
     }
 }

@@ -10,7 +10,7 @@
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="resources/theme1/css/blog.css" rel="stylesheet" />
+    <link href="../resources/theme1/css/blog.css" rel="stylesheet" type="text/css"/>
     <link href="https://fonts.googleapis.com/css?family=Playfair&#43;Display:700,900&amp;display=swap" rel="stylesheet" />
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.bundle.min.js"></script>
 
@@ -31,8 +31,10 @@
 
   <div class="nav-scroller py-1 mb-2">
     <nav class="nav d-flex justify-content-between">
-      <a class="p-2 link-secondary" href="doctorDashboard/appointments">Appointments</a>
-      <a class="p-2 link-secondary" href="doctorDashboard/medcards">Medcards</a>
+      <a class="p-2 link-secondary" href="medcards/show">Medcards info</a>
+      <a class="p-2 link-secondary" href="medcards/updatePage">Medcard update</a>
+      <a class="p-2 link-secondary" href="medcards/createPage">Medcard creation</a>
+      <a class="p-2 link-secondary" href="medcards/deletePage">Medcard deletion</a>
     </nav>
   </div>
 </div>

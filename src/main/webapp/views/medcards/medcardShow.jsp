@@ -32,10 +32,10 @@
 
   <div class="nav-scroller py-1 mb-2">
     <nav class="nav d-flex justify-content-between">
-      <a class="p-2 link-secondary" href="show">Appointments info</a>
-      <a class="p-2 link-secondary" href="updatePage">Appointment update</a>
-      <a class="p-2 link-secondary" href="createPage">Appointment creation</a>
-      <a class="p-2 link-secondary" href="deletePage">Appointments deletion</a>
+      <a class="p-2 link-secondary" href="show">Medcards info</a>
+      <a class="p-2 link-secondary" href="updatePage">Medcards update</a>
+      <a class="p-2 link-secondary" href="createPage">Medcards creation</a>
+      <a class="p-2 link-secondary" href="deletePage">Medcards deletion</a>
     </nav>
   </div>
 </div>
@@ -43,7 +43,7 @@
 <div class="container light-style flex-grow-1 container-p-y">
 
     <h4 class="font-weight-bold py-3 mb-4">
-      Appointment information page
+      Medcard records information page
     </h4>
 
     <div class="SuccessAnswer" ><span style='color: green;' id="response"></span></div>
@@ -52,31 +52,35 @@
     <div class="card overflow-hidden">
 
         <c:choose>
-            <c:when test="${appointments.size() > 0}">
+            <c:when test="${medcards.size() > 0}">
                 <table border="1" style = "text-align:center">
                     <tbody>
                             <tr>
-                                <td width="50%" style="font-size:20px;"><strong>Patient</strong></td>
-                                <td width="50%" style="font-size:20px;"><strong>When</strong></td>
+                                <td width="15%" style="font-size:20px;"><strong>Patient</strong></td>
+                                <td width="15%" style="font-size:20px;"><strong>Disease</strong></td>
+                                <td width="15%" style="font-size:20px;"><strong>Diagnose date</strong></td>
+                                <td width="15%" style="font-size:20px;"><strong>Dicharge date</strong></td>
+                                <td width="40%" style="font-size:20px;"><strong>Notes</strong></td>
                             </tr>
 
-                        <c:forEach items="${appointments}" var="item" varStatus="status">
+                        <c:forEach items="${medcards}" var="item" varStatus="status">
                             <tr>
-                                <td width="50%">${item.username}</td>
-                                <td width="50%">${item.date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"))}</td>
+                                <td width="15%">${item.username}</td>
+                                <td width="15%">${item.diseaseName}</td>
+                                <td width="15%">${item.diagnoseDate.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))}</td>
+                                <td width="15%">${item.dischargeDate.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))}</td>
+                                <td width="40%">${item.notes}</td>
                             </tr>
                         </c:forEach>
                     </body>
                 </table>
             </c:when>
             <c:otherwise>
-                <p>You don't have any appointments.</p>
+                <p>You don't have any medcard records.</p>
             </c:otherwise>
         </c:choose>
 
-
     </div>
-
 </div>
 
 </body>

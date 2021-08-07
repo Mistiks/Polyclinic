@@ -28,18 +28,23 @@ public class MedCard implements Serializable {
     @Column(name = "discharge_date")
     private LocalDate dischargeDate;
 
+    @Column(name = "notes")
+    private String notes;
+
     @ManyToOne
-    @JoinColumn(name="id", nullable=false, insertable = false, updatable = false)
+    @JoinColumn(name="card_id", insertable = false, updatable = false)
     private User user;
 
     public MedCard() {}
 
-    public MedCard(Integer cardId, Integer doctorId, String diseaseName, LocalDate diagnoseDate, LocalDate dischargeDate) {
+    public MedCard(Integer cardId, Integer doctorId, String diseaseName, LocalDate diagnoseDate,
+                   LocalDate dischargeDate, String notes) {
         this.cardId = cardId;
         this.diseaseName = diseaseName;
         this.diagnoseDate = diagnoseDate;
         this.dischargeDate = dischargeDate;
         this.doctorId = doctorId;
+        this.notes = notes;
     }
 
     public Integer getCardId() {
@@ -88,5 +93,13 @@ public class MedCard implements Serializable {
 
     public void setDoctorId(Integer doctorId) {
         this.doctorId = doctorId;
+    }
+
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
     }
 }

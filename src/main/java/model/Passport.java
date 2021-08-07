@@ -47,12 +47,17 @@ public class Passport implements Serializable {
     private String birthCountry;
 
     @ManyToOne
-    @JoinColumn(name="user_id", nullable=false, insertable = false, updatable = false)
+    @JoinColumn(name="user_id", insertable = false, updatable = false)
     private User user;
 
     public Passport() {}
 
-    public Passport(int userId, String passportId, String passportNum, String country, String nationality, LocalDate birthDate, Gender sex, LocalDate issueDate, LocalDate expireDate, String birth) {
+    public Passport(Integer id) {
+        this.userId = id;
+    }
+
+    public Passport(int userId, String passportId, String passportNum, String country, String nationality,
+                    LocalDate birthDate, Gender sex, LocalDate issueDate, LocalDate expireDate, String birth) {
         this.userId = userId;
         this.passportId = passportId;
         this.passportNum = passportNum;
