@@ -38,7 +38,7 @@
         <div class="col-4 d-flex justify-content-end align-items-center">
             <c:choose>
                 <c:when test="${currentUser ne null}">
-                    <p>Welcome,<a class="p-2 link-secondary" href="profile">${currentUser.login}</a></p>
+                    <p>Welcome,<a class="p-2 link-secondary" href="profile/show">${currentUser.login}</a></p>
                 </c:when>
                 <c:otherwise>
                     <span class="primary-btns">

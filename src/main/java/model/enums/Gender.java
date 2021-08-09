@@ -1,9 +1,9 @@
 package model.enums;
 
 public enum Gender {
-    UNKNOWN ("unknown"),
-    MALE ("male"),
-    FEMALE ("female");
+    UNKNOWN ("UNKNOWN"),
+    MALE ("MALE"),
+    FEMALE ("FEMALE");
 
     private String gender;
 

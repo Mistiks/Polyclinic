@@ -5,16 +5,21 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import model.enums.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.oauth2.client.CommonOAuth2Provider;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.InMemoryOAuth2AuthorizedClientService;
@@ -23,6 +28,8 @@ import org.springframework.security.oauth2.client.registration.ClientRegistratio
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import view.CustomUserDetailsService;
+import view.api.IUserService;
 
 @Configuration
 @EnableWebSecurity
@@ -36,6 +43,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     Environment env;
+
+    @Bean
+    public UserDetailsService userDetailsService(IUserService userService) {
+        return new CustomUserDetailsService(userService);
+    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -100,19 +112,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and().oauth2Login()
                 .loginPage("/signIn")
                 .failureUrl("/signIn?error=true")
-                .defaultSuccessUrl("/admin/dashboard")
                 .and().logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                 .logoutSuccessUrl("/home")
                 .and().exceptionHandling()
-                .accessDeniedPage("/access_denied")
+                .accessDeniedPage("/home")
                 .and().authorizeRequests()
-                .antMatchers("/login/**").permitAll()
-                .antMatchers("/oauth_login/**").permitAll()
-                .antMatchers("/admin/**").hasAuthority("ADMIN")
-                .antMatchers(HttpMethod.POST, "/airports").hasAuthority("ADMIN")
-                .antMatchers("/**").permitAll()
-                .anyRequest().authenticated()
+                .antMatchers("/", "/home", "/signUp/**", "/signIn/**").permitAll()
+                .antMatchers("/dashboard/**").hasAuthority(Role.ADMIN.name())
+                .antMatchers("/doctorDashboard/**").hasAuthority(Role.DOCTOR.name())
+                .antMatchers(HttpMethod.POST, "/talon/time").hasAnyAuthority(Role.ADMIN.name(), Role.DOCTOR.name(), Role.USER.name())
+                .antMatchers( "/profile/**").hasAnyAuthority(Role.ADMIN.name(), Role.DOCTOR.name(), Role.USER.name())
         ;
     }
 }

@@ -1,7 +1,7 @@
 package controller.web.servlets;
 
+import model.User;
 import model.dto.UserDTO;
-import model.dto.UserProfileDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -18,19 +18,22 @@ public class ProfileServlet {
 
     private final IUserService userService;
     private final ICountryService countryService;
+    private final String CURRENT_USER = "currentUser";
 
     public ProfileServlet(IUserService userService, ICountryService countryService) {
         this.userService = userService;
         this.countryService = countryService;
     }
 
-    @GetMapping
-    public String doGet(Model model) {
+    @GetMapping(value = "/update")
+    public String doGet(Model model, HttpServletRequest request) {
+        User user = (User) request.getSession().getAttribute(CURRENT_USER);
+        model.addAttribute("profile", userService.getAllUserInfo(user.getLogin()));
         model.addAttribute("countries", countryService.getAll());
-        return "profile";
+        return "profile/profileUpdate";
     }
 
-    @PostMapping
+    @PostMapping(value = "/update")
     @ResponseBody
     public ResponseEntity<?> updateProfile(@RequestBody UserDTO userDTO, HttpServletRequest request) {
         try {
@@ -39,5 +42,12 @@ public class ProfileServlet {
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @GetMapping(value = "/show")
+    public String showProfile(Model model, HttpServletRequest request) {
+        User user = (User) request.getSession().getAttribute(CURRENT_USER);
+        model.addAttribute("profile", userService.getAllUserInfo(user.getLogin()));
+        return "profile/profileShow";
     }
 }

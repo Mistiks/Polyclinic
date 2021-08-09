@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ page import="java.util.*, java.text.*, model.enums.Gender" %>
 
 <html lang="en">
 <head>
@@ -10,7 +11,7 @@
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="resources/theme1/css/blog.css" rel="stylesheet" />
+    <link href="../resources/theme1/css/blog.css" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css?family=Playfair&#43;Display:700,900&amp;display=swap" rel="stylesheet" />
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.bundle.min.js"></script>
 
@@ -34,7 +35,7 @@
     sendData.house = $("#house").val();
     sendData.passportId = $("#passportId").val();
     sendData.passportNumber = $("#passportNumber").val();
-    sendData.passportCountry = $("#passportCountry").val();
+    sendData.country = $("#passportCountry").val();
     sendData.nationality = $("#nationality").val();
     sendData.sex = $("#sex").val();
     sendData.issueDate = $("#issueDate").val();
@@ -42,7 +43,7 @@
     sendData.birthCountry = $("#birthCountry").val();
     sendData.birthDate = $("#birthDate").val();
         $.ajax({
-          url: "${pageContext.request.contextPath}/profile",
+          url: "${pageContext.request.contextPath}/profile/update",
           type: "post",
           dataType: "json",
           data: JSON.stringify(sendData),
@@ -66,21 +67,21 @@
     <header class="blog-header py-3">
       <div class="row flex-nowrap justify-content-between align-items-center">
         <div class="col-4 pt-1">
-          <a class="blog-header-logo text-dark" href="home">IPolyclinic</a>
+          <a class="blog-header-logo text-dark" href="${pageContext.request.contextPath}/home">IPolyclinic</a>
         </div>
         <div class="col-4 d-flex justify-content-end align-items-center">
-            <p>Welcome,<a class="p-2 link-secondary" href="profile">${currentUser.login}</a></p>
+            <p>Welcome,<a class="p-2 link-secondary" href="show">${currentUser.login}</a></p>
         </div>
       </div>
     </header>
 
   <div class="nav-scroller py-1 mb-2">
     <nav class="nav d-flex justify-content-between">
-      <a class="p-2 link-secondary" href="#">Home</a>
-      <a class="p-2 link-secondary" href="#">About US</a>
+      <a class="p-2 link-secondary" href="show">Profile</a>
+      <a class="p-2 link-secondary" href="update">Update</a>
       <a class="p-2 link-secondary" href="#">Departments</a>
       <a class="p-2 link-secondary" href="talon">Get ticket</a>
-      <a class="p-2 link-secondary" href="logout">Logout</a>
+      <a class="p-2 link-secondary" href="${pageContext.request.contextPath}/logout">Logout</a>
     </nav>
   </div>
 </div>
@@ -113,32 +114,32 @@
 
                 <div class="form-group">
                   <label class="form-label">Username</label>
-                  <input type="text" class="form-control" id ="username" name ="username">
+                  <input type="text" class="form-control" id ="username" name ="username" value = ${profile.username}>
                 </div>
 
                 <div class="form-group">
                   <label class="form-label">Name</label>
-                  <input type="text" class="form-control" name ="name" id ="name">
+                  <input type="text" class="form-control" name ="name" id ="name" value = ${profile.firstName}>
                 </div>
 
                 <div class="form-group">
                   <label class="form-label">Surname</label>
-                  <input type="text" class="form-control" name ="surname" id ="surname">
+                  <input type="text" class="form-control" name ="surname" id ="surname" value = ${profile.surname}>
                 </div>
 
                 <div class="form-group">
                   <label class="form-label">Patronymic</label>
-                  <input type="text" class="form-control" name ="patronymic" id ="patronymic">
+                  <input type="text" class="form-control" name ="patronymic" id ="patronymic" value = ${profile.patronymic}>
                 </div>
 
                 <div class="form-group">
                   <label class="form-label">E-mail</label>
-                  <input type="text" class="form-control" name ="mail" id ="mail">
+                  <input type="text" class="form-control" name ="mail" id ="mail" value = ${profile.mail}>
                 </div>
 
                 <div class="form-group">
                   <label class="form-label">Phone number</label>
-                  <input type="text" class="form-control" name ="number" id ="number">
+                  <input type="text" class="form-control" name ="number" id ="number" value = ${profile.number}>
                 </div>
 
               </div>
@@ -170,31 +171,32 @@
 
                 <div class="form-group">
                   <label class="form-label">Country</label>
-                        <select class="custom-select" name ="residenceCountry" id ="residenceCountry" value = "">
+                        <select class="custom-select" name ="residenceCountry" id ="residenceCountry" value = ${profile.residenceCountry}>
+                                <option></option>
                                 <c:forEach items="${countries}" var="country">
-                                    <option value="${country.name}">${country.name}</option>
+                                    <option value="${country.name}" <c:if test="${country.name == profile.residenceCountry}"> selected </c:if>>${country.name}</option>
                                 </c:forEach>
                         </select>
                 </div>
 
                 <div class="form-group">
                   <label class="form-label">City</label>
-                  <input type="text" class="form-control" name ="city" id ="city">
+                  <input type="text" class="form-control" name ="city" id ="city" value = ${profile.city}>
                 </div>
 
                 <div class="form-group">
                   <label class="form-label">Street</label>
-                  <input type="text" class="form-control" name ="street" id ="street">
+                  <input type="text" class="form-control" name ="street" id ="street" value = ${profile.street}>
                 </div>
 
                 <div class="form-group">
                   <label class="form-label">House</label>
-                  <input type="text" class="form-control" name ="house" id ="house">
+                  <input type="text" class="form-control" name ="house" id ="house" value = ${profile.house}>
                 </div>
 
                 <div class="form-group">
                   <label class="form-label">Flat</label>
-                  <input type="text" class="form-control" name ="flat" id ="flat">
+                  <input type="text" class="form-control" name ="flat" id ="flat" value = ${profile.flat}>
                 </div>
               </div>
             </div>
@@ -206,57 +208,59 @@
 
                 <div class="form-group">
                   <label class="form-label">Passport Id</label>
-                  <input type="text" class="form-control" name ="passportId" id ="passportId">
+                  <input type="text" class="form-control" name ="passportId" id ="passportId" value = ${profile.passportId}>
                 </div>
 
                 <div class="form-group">
                   <label class="form-label">Passport Number</label>
-                  <input type="text" class="form-control" name ="passportNumber" id ="passportNumber">
+                  <input type="text" class="form-control" name ="passportNumber" id ="passportNumber" value = ${profile.passportNum}>
                 </div>
 
                 <div class="form-group">
                   <label class="form-label">Passport Country</label>
-                        <select class="custom-select" name ="passportCountry" id ="passportCountry" value = "">
+                        <select class="custom-select" name ="passportCountry" id ="passportCountry" value = ${profile.country}>
+                                <option></option>
                                 <c:forEach items="${countries}" var="country">
-                                    <option value="${country.name}">${country.name}</option>
+                                    <option value="${country.name}" <c:if test="${country.name == profile.country}"> selected </c:if>>${country.name}</option>
                                 </c:forEach>
                         </select>
                 </div>
 
                 <div class="form-group">
                   <label class="form-label">Nationality</label>
-                  <input type="text" class="form-control" value="" name ="nationality" id ="nationality">
+                  <input type="text" class="form-control" name ="nationality" id ="nationality" value = ${profile.nationality}>
                 </div>
 
                 <div class="form-group">
                   <label class="form-label">Gender</label>
                         <select class="custom-select" name ="sex" id ="sex">
-                            <option>UNKNOWN</option>
-                            <option>MALE</option>
-                            <option>FEMALE</option>
+                            <option <c:if test="${profile.sex == Gender.UNKNOWN}"> selected </c:if>>UNKNOWN</option>
+                            <option <c:if test="${profile.sex == Gender.MALE}"> selected </c:if>>MALE</option>
+                            <option <c:if test="${profile.sex == Gender.FEMALE}"> selected </c:if>>FEMALE</option>
                         </select>
                 </div>
 
                 <div class="form-group">
                   <label class="form-label">Issue date in format dd/MM/yyyy</label>
-                  <input type="text" class="form-control" value="" name ="issueDate" id ="issueDate">
+                  <input type="text" class="form-control" value = ${profile.issueDate} name ="issueDate" id ="issueDate">
                 </div>
 
                 <div class="form-group">
                   <label class="form-label">Expire date in format dd/MM/yyyy</label>
-                  <input type="text" class="form-control" value="" name ="expireDate" id ="expireDate">
+                  <input type="text" class="form-control" value = ${profile.expireDate} name ="expireDate" id ="expireDate">
                 </div>
 
                 <div class="form-group">
                   <label class="form-label">Birth Date in format dd/MM/yyyy</label>
-                  <input type="text" class="form-control" value="" name ="birthDate" id ="birthDate">
+                  <input type="text" class="form-control" value = ${profile.birthDate} name ="birthDate" id ="birthDate">
                 </div>
 
                 <div class="form-group">
                   <label class="form-label">Country of birth</label>
-                        <select class="custom-select" name ="birthCountry" id ="birthCountry" value = "">
+                        <select class="custom-select" name ="birthCountry" id ="birthCountry">
+                                <option></option>
                                 <c:forEach items="${countries}" var="country">
-                                    <option value="${country.name}">${country.name}</option>
+                                    <option value="${country.name}" <c:if test="${country.name == profile.birthCountry}"> selected </c:if>>${country.name}</option>
                                 </c:forEach>
                         </select>
                 </div>

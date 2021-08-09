@@ -3,6 +3,7 @@ package config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import storage.api.*;
 import utils.HashCreator;
 import utils.api.IHashCreator;
@@ -38,8 +39,8 @@ public class RootConfig {
      * @return object which implements IAuthService interface
      */
     @Bean
-    public IAuthService getAuthService(IUserService userService, IHashCreator hashCreator) {
-        return new AuthService(userService, hashCreator);
+    public IAuthService getAuthService(IUserService userService, IHashCreator hashCreator, UserDetailsService userDetailsService) {
+        return new AuthService(userService, hashCreator, userDetailsService);
     }
 
     @Bean

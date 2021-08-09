@@ -76,7 +76,7 @@
           <a class="blog-header-logo text-dark" href="${pageContext.request.contextPath}/home">IPolyclinic</a>
         </div>
         <div class="col-4 d-flex justify-content-end align-items-center">
-            <p>Welcome,<a class="p-2 link-secondary" href="${pageContext.request.contextPath}/profile">${currentUser.login}</a></p>
+            <p>Welcome,<a class="p-2 link-secondary" href="${pageContext.request.contextPath}/profile/show">${currentUser.login}</a></p>
         </div>
       </div>
     </header>
