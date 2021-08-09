@@ -1,10 +1,13 @@
 package view.api;
 
 import model.User;
+import model.dto.Appointments;
+import model.dto.MedCardWithUsername;
 import model.dto.UserDTO;
 import model.dto.UserProfileDTO;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 public interface IUserService {
 
@@ -33,4 +36,8 @@ public interface IUserService {
     UserProfileDTO update(UserProfileDTO input);
     void delete(String username);
     void update (UserDTO input, HttpServletRequest request);
+
+    List<MedCardWithUsername> getAllMedcardInfo(String login, HttpServletRequest request);
+
+    List<Appointments> getAllTalonInfo(String login, HttpServletRequest request);
 }

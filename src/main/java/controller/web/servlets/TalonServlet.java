@@ -5,6 +5,7 @@ import model.Talon;
 import model.User;
 import model.dto.TalonRequest;
 import model.dto.TalonResponse;
+import model.dto.UserSession;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -91,18 +92,18 @@ public class TalonServlet {
     @PostMapping(value = "/time")
     @ResponseBody
     public ResponseEntity<?> saveTalon(@RequestBody TalonRequest talonRequest, HttpServletRequest request) {
-        User user = (User) request.getSession().getAttribute(CURRENT_USER);
+        UserSession user = (UserSession) request.getSession().getAttribute(CURRENT_USER);
         LocalDate requestDate = LocalDate.parse(talonRequest.getDate(), formatter);
         LocalTime requestTime = LocalTime.parse(talonRequest.getTime(), timeFormatter);
         LocalDateTime localDateTime = requestDate.atTime(requestTime);
         Talon talon = talonRepository.getTalon(talonRequest.getDoctorId(), localDateTime);
 
         if (talon != null) {
-            talon.setUserId(user.getId());
+            talon.setUserId(user.getUserId());
             talonRepository.save(talon);
             return new ResponseEntity<>(HttpStatus.CREATED);
         } else {
-            return new ResponseEntity<>(HttpStatus.CONFLICT);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 }

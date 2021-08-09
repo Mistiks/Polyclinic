@@ -4,6 +4,7 @@ import model.User;
 import javax.servlet.http.*;
 
 import model.dto.LoginData;
+import model.dto.UserSession;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -65,7 +66,8 @@ public class LoginServlet {
         if (user == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         } else {
-            session.setAttribute(CURRENT_USER, user);
+            UserSession userSession = new UserSession(user.getLogin(), user.getId(), user.getDoctorId(), user.getRole());
+            session.setAttribute(CURRENT_USER, userSession);
             return new ResponseEntity<>(HttpStatus.MOVED_PERMANENTLY);
         }
     }

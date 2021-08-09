@@ -2,6 +2,7 @@ package controller.web.servlets;
 
 import model.User;
 import model.dto.UserDTO;
+import model.dto.UserSession;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -27,7 +28,7 @@ public class ProfileServlet {
 
     @GetMapping(value = "/update")
     public String doGet(Model model, HttpServletRequest request) {
-        User user = (User) request.getSession().getAttribute(CURRENT_USER);
+        UserSession user = (UserSession) request.getSession().getAttribute(CURRENT_USER);
         model.addAttribute("profile", userService.getAllUserInfo(user.getLogin()));
         model.addAttribute("countries", countryService.getAll());
         return "profile/profileUpdate";
@@ -46,8 +47,22 @@ public class ProfileServlet {
 
     @GetMapping(value = "/show")
     public String showProfile(Model model, HttpServletRequest request) {
-        User user = (User) request.getSession().getAttribute(CURRENT_USER);
+        UserSession user = (UserSession) request.getSession().getAttribute(CURRENT_USER);
         model.addAttribute("profile", userService.getAllUserInfo(user.getLogin()));
         return "profile/profileShow";
+    }
+
+    @GetMapping(value = "/medcard")
+    public String showMedcardRecords(Model model, HttpServletRequest request) {
+        UserSession user = (UserSession) request.getSession().getAttribute(CURRENT_USER);
+        model.addAttribute("medcard", userService.getAllMedcardInfo(user.getLogin(), request));
+        return "profile/profileMedcard";
+    }
+
+    @GetMapping(value = "/ticket")
+    public String showTalonRecords(Model model, HttpServletRequest request) {
+        UserSession user = (UserSession) request.getSession().getAttribute(CURRENT_USER);
+        model.addAttribute("talon", userService.getAllTalonInfo(user.getLogin(), request));
+        return "profile/profileTalon";
     }
 }

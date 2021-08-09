@@ -4,6 +4,7 @@ import model.Talon;
 import model.User;
 import model.dto.Appointment;
 import model.dto.Appointments;
+import model.dto.UserSession;
 import model.enums.TalonTime;
 import storage.api.ITalonRepository;
 import view.api.ITalonService;
@@ -71,7 +72,7 @@ public class TalonService implements ITalonService {
         String username = appointment.getUsername();
         String visitTime = appointment.getDateTime();
         User user = userService.get(username);
-        User doctor = (User) request.getSession().getAttribute(CURRENT_USER);
+        UserSession doctor = (UserSession) request.getSession().getAttribute(CURRENT_USER);
         this.add(user.getId(), visitTime, doctor.getDoctorId());
     }
 
@@ -86,7 +87,7 @@ public class TalonService implements ITalonService {
             throw new IllegalArgumentException("Entered time is wrong!");
         }
 
-        User doctor = (User) request.getSession().getAttribute(CURRENT_USER);
+        UserSession doctor = (UserSession) request.getSession().getAttribute(CURRENT_USER);
         Talon talon = repository.getTalonForDeleteOrUpdate(doctor.getDoctorId(), visitDateTime);
 
         if (talon != null) {
@@ -107,7 +108,7 @@ public class TalonService implements ITalonService {
             throw new IllegalArgumentException("Entered time is wrong!");
         }
 
-        User doctor = (User) request.getSession().getAttribute(CURRENT_USER);
+        UserSession doctor = (UserSession) request.getSession().getAttribute(CURRENT_USER);
         Talon talon = repository.getTalonForDeleteOrUpdate(doctor.getDoctorId(), visitDateTime);
 
         if (talon != null) {
@@ -128,8 +129,7 @@ public class TalonService implements ITalonService {
     @Override
     @Transactional
     public List<Appointments> getAllTalons(HttpServletRequest request) {
-        User doctor = (User) request.getSession().getAttribute(CURRENT_USER);
-
+        UserSession doctor = (UserSession) request.getSession().getAttribute(CURRENT_USER);
         return repository.findByDoctorIdOrderByVisitTime(doctor.getDoctorId());
     }
 }

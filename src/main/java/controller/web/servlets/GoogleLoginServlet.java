@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import model.TokenRequest;
 import model.User;
+import model.dto.UserSession;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.security.config.oauth2.client.CommonOAuth2Provider;
@@ -93,7 +94,8 @@ public class GoogleLoginServlet {
 
         try {
             User user = authService.googleAuthentication(userInfo.get("email"), userInfo.get("id"));
-            request.getSession().setAttribute(CURRENT_USER, user);
+            UserSession userSession = new UserSession(user.getLogin(), user.getId(), user.getDoctorId(), user.getRole());
+            request.getSession().setAttribute(CURRENT_USER, userSession);
         } catch (IllegalArgumentException e) {
             model.addAttribute(SIGN_IN_FAIL, e.getMessage());
             return "signIn";

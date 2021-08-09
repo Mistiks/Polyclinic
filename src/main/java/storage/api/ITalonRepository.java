@@ -52,4 +52,9 @@ public interface ITalonRepository extends JpaRepository<Talon, Integer> {
             value = "SELECT new model.dto.Appointments(u.login, t.visitTime) FROM Talon t " +
                     "inner join User u ON u.id = t.userId WHERE t.doctorId = ?1 and t.userId IS NOT NULL")
     List<Appointments> findByDoctorIdOrderByVisitTime(Integer doctorId);
+
+    @Query(
+            value = "SELECT new model.dto.Appointments(u.login, t.visitTime) FROM Talon t " +
+                    "inner join User u ON u.doctorId = t.doctorId WHERE t.userId = ?1")
+    List<Appointments> findByUserIdOrderByVisitTime(Integer userId);
 }

@@ -79,7 +79,8 @@
     <nav class="nav d-flex justify-content-between">
       <a class="p-2 link-secondary" href="show">Profile</a>
       <a class="p-2 link-secondary" href="update">Update</a>
-      <a class="p-2 link-secondary" href="#">Departments</a>
+      <a class="p-2 link-secondary" href="medcard">Medcard</a>
+      <a class="p-2 link-secondary" href="ticket">Tickets</a>
       <a class="p-2 link-secondary" href="talon">Get ticket</a>
       <a class="p-2 link-secondary" href="${pageContext.request.contextPath}/logout">Logout</a>
     </nav>

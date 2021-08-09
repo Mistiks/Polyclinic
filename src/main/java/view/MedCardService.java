@@ -5,6 +5,7 @@ import model.User;
 import model.dto.Appointments;
 import model.dto.MedCardWithUsername;
 import model.dto.MedcardDTO;
+import model.dto.UserSession;
 import storage.api.IMedCardRepository;
 import view.api.IMedCardService;
 import view.api.IUserService;
@@ -41,7 +42,7 @@ public class MedCardService implements IMedCardService {
     @Override
     public void create(MedcardDTO medcardDTO, HttpServletRequest request) {
         User user = userService.get(medcardDTO.getUsername());
-        User doctor = (User) request.getSession().getAttribute(CURRENT_USER);
+        UserSession doctor = (UserSession) request.getSession().getAttribute(CURRENT_USER);
         LocalDate diagnoseDate;
         LocalDate dischargeDate;
 
@@ -65,7 +66,7 @@ public class MedCardService implements IMedCardService {
     @Override
     public void delete(MedcardDTO medcardDTO, HttpServletRequest request) {
         User user = userService.get(medcardDTO.getUsername());
-        User doctor = (User) request.getSession().getAttribute(CURRENT_USER);
+        UserSession doctor = (UserSession) request.getSession().getAttribute(CURRENT_USER);
         LocalDate diagnoseDate;
 
         if (user == null) {
@@ -85,7 +86,7 @@ public class MedCardService implements IMedCardService {
     @Override
     public MedcardDTO getMedcardRecord(MedcardDTO diseaseDTO, HttpServletRequest request) {
         User user = userService.get(diseaseDTO.getUsername());
-        User doctor = (User) request.getSession().getAttribute(CURRENT_USER);
+        UserSession doctor = (UserSession) request.getSession().getAttribute(CURRENT_USER);
         LocalDate diagnoseDate;
 
         if (user == null) {
@@ -137,7 +138,7 @@ public class MedCardService implements IMedCardService {
     @Override
     @Transactional
     public List<MedCardWithUsername> getAllRecords(HttpServletRequest request) {
-        User doctor = (User) request.getSession().getAttribute(CURRENT_USER);
+        UserSession doctor = (UserSession) request.getSession().getAttribute(CURRENT_USER);
         return repository.getAllRecordsForDoctor(doctor.getDoctorId());
     }
 

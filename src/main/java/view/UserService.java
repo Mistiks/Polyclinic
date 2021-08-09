@@ -4,15 +4,11 @@ import model.Address;
 import model.Passport;
 import model.Talon;
 import model.User;
-import model.dto.UserDTO;
-import model.dto.UserProfileDTO;
+import model.dto.*;
 import model.enums.Role;
 import model.enums.Status;
 import org.apache.commons.lang3.RandomStringUtils;
-import storage.api.IAddressRepository;
-import storage.api.IPassportRepository;
-import storage.api.ITalonRepository;
-import storage.api.IUserRepository;
+import storage.api.*;
 import utils.api.IHashCreator;
 import view.api.IUserService;
 
@@ -31,16 +27,18 @@ public class UserService implements IUserService {
     private final IAddressRepository addressRepository;
     private final ITalonRepository talonRepository;
     private final IHashCreator hashCreator;
+    private final IMedCardRepository medCardRepository;
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     private final String CURRENT_USER = "currentUser";
 
     public UserService(IUserRepository repository, IPassportRepository passportRepository,
-                       IAddressRepository addressRepository, IHashCreator hashCreator, ITalonRepository talonRepository) {
+                       IAddressRepository addressRepository, IHashCreator hashCreator, ITalonRepository talonRepository, IMedCardRepository medCardRepository) {
         this.repository = repository;
         this.passportRepository = passportRepository;
         this.addressRepository = addressRepository;
         this.hashCreator = hashCreator;
         this.talonRepository = talonRepository;
+        this.medCardRepository = medCardRepository;
     }
 
     /**
@@ -83,6 +81,8 @@ public class UserService implements IUserService {
     public void signUpGoogle(User user) {
         user.setRole(Role.USER);
         user.setStatus(Status.UNVERIFIED);
+        user.setSalt(createSalt());
+        user.setHash(createPasswordHashWithSalt("", user.getSalt()));
         this.repository.save(user);
     }
 
@@ -113,6 +113,9 @@ public class UserService implements IUserService {
         User user = this.get(input.getUsername());
         Passport passport = passportRepository.getByUserId(user.getId());
         Address address = addressRepository.getByUserId(user.getId());
+        LocalDate birthDate;
+        LocalDate issueDate;
+        LocalDate expireDate;
 
         if (passport == null) {
             passport = new Passport();
@@ -130,6 +133,7 @@ public class UserService implements IUserService {
         user.setPastPosition(user.getPastPosition());
         user.setCabinetNum(user.getCabinetNum());
         user.setMail(input.getMail());
+        user.setStatus(Status.UNVERIFIED);
 
         if (!(nullOrEmpty(input.getCurrentPassword()) & nullOrEmpty(input.getNewPassword())
                 & nullOrEmpty(input.getRepeatPassword()))) {
@@ -155,29 +159,39 @@ public class UserService implements IUserService {
         passport.setCountry(input.getCountry());
         passport.setNationality(input.getNationality());
 
-        try {
-            passport.setBirthDate(LocalDate.parse(input.getBirthDate(), formatter));
-            passport.setIssueDate(LocalDate.parse(input.getIssueDate(), formatter));
-            passport.setExpireDate(LocalDate.parse(input.getExpireDate(), formatter));
-        } catch (DateTimeParseException e) {
-            throw new IllegalArgumentException("Wrong date!");
-        }
+        birthDate = checkAndParseDate(input.getBirthDate());
+        issueDate = checkAndParseDate(input.getIssueDate());
+        expireDate = checkAndParseDate(input.getExpireDate());
 
+        passport.setBirthDate(birthDate);
+        passport.setIssueDate(issueDate);
+        passport.setExpireDate(expireDate);
         passport.setSex(input.getSex());
         passport.setBirthCountry(input.getBirthCountry());
 
         repository.save(user);
         addressRepository.save(address);
         passportRepository.save(passport);
-        request.getSession().setAttribute(CURRENT_USER, user);
+
+        UserSession userSession = new UserSession(user.getLogin(), user.getId(), user.getDoctorId(), user.getRole());
+        request.getSession().setAttribute(CURRENT_USER, userSession);
     }
 
+    /**
+     * Update user data by admin
+     *
+     * @param input data that will be saved
+     * @return object with updated data
+     */
     @Override
     @Transactional
     public UserProfileDTO update(UserProfileDTO input) {
         User user = this.get(input.getUsername());
         Passport passport = passportRepository.getByUserId(user.getId());
         Address address = addressRepository.getByUserId(user.getId());
+        LocalDate birthDate;
+        LocalDate issueDate;
+        LocalDate expireDate;
 
         if (passport == null) {
             passport = new Passport(user.getId());
@@ -208,14 +222,13 @@ public class UserService implements IUserService {
         passport.setCountry(input.getCountry());
         passport.setNationality(input.getNationality());
 
-        try {
-            passport.setBirthDate(LocalDate.parse(input.getBirthDate(), formatter));
-            passport.setIssueDate(LocalDate.parse(input.getIssueDate(), formatter));
-            passport.setExpireDate(LocalDate.parse(input.getExpireDate(), formatter));
-        } catch (DateTimeParseException e) {
-            throw new IllegalArgumentException("Wrong date!");
-        }
+        birthDate = checkAndParseDate(input.getBirthDate());
+        issueDate = checkAndParseDate(input.getIssueDate());
+        expireDate = checkAndParseDate(input.getExpireDate());
 
+        passport.setBirthDate(birthDate);
+        passport.setIssueDate(issueDate);
+        passport.setExpireDate(expireDate);
         passport.setSex(input.getSex());
         passport.setBirthCountry(input.getBirthCountry());
 
@@ -328,5 +341,40 @@ public class UserService implements IUserService {
         }
 
         repository.delete(user);
+    }
+
+    @Override
+    @Transactional
+    public List<MedCardWithUsername> getAllMedcardInfo(String login, HttpServletRequest request) {
+        UserSession user = (UserSession) request.getSession().getAttribute(CURRENT_USER);
+        return medCardRepository.findByUserIdOrderByDiagnoseDate(user.getUserId());
+    }
+
+    @Override
+    @Transactional
+    public List<Appointments> getAllTalonInfo(String login, HttpServletRequest request) {
+        UserSession user = (UserSession) request.getSession().getAttribute(CURRENT_USER);
+        return talonRepository.findByUserIdOrderByVisitTime(user.getUserId());
+    }
+
+    /**
+     * Transforms String in LocalDate if possible
+     *
+     * @param date String containing date
+     * @return LocalDate of String or null if String empty
+     * @throws IllegalArgumentException if parsing is impossible
+     */
+    private LocalDate checkAndParseDate(String date) {
+        LocalDate result = null;
+
+        if (!date.isEmpty()) {
+            try {
+                result = LocalDate.parse(date, formatter);
+            } catch (DateTimeParseException e) {
+                throw new IllegalArgumentException("Date is wrong!");
+            }
+        }
+
+        return result;
     }
 }

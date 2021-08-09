@@ -28,8 +28,9 @@ public class RootConfig {
      */
     @Bean
     public IUserService getUserService(IUserRepository repository, IPassportRepository passportRepository,
-                                       IAddressRepository addressRepository, IHashCreator hashCreator, ITalonRepository talonRepository) {
-        return new UserService(repository, passportRepository, addressRepository, hashCreator, talonRepository);
+                                       IAddressRepository addressRepository, IHashCreator hashCreator,
+                                       ITalonRepository talonRepository, IMedCardRepository medCardRepository) {
+        return new UserService(repository, passportRepository, addressRepository, hashCreator, talonRepository, medCardRepository);
     }
 
     /**

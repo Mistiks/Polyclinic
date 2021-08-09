@@ -11,7 +11,7 @@
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="../../resources/theme1/css/blog.css" rel="stylesheet" type="text/css"/>
+    <link href="../resources/theme1/css/blog.css" rel="stylesheet" type="text/css"/>
     <link href="https://fonts.googleapis.com/css?family=Playfair&#43;Display:700,900&amp;display=swap" rel="stylesheet" />
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.bundle.min.js"></script>
 
@@ -32,10 +32,12 @@
 
   <div class="nav-scroller py-1 mb-2">
     <nav class="nav d-flex justify-content-between">
-      <a class="p-2 link-secondary" href="show">Medcards info</a>
-      <a class="p-2 link-secondary" href="updatePage">Medcards update</a>
-      <a class="p-2 link-secondary" href="createPage">Medcards creation</a>
-      <a class="p-2 link-secondary" href="deletePage">Medcards deletion</a>
+      <a class="p-2 link-secondary" href="show">Profile</a>
+      <a class="p-2 link-secondary" href="update">Update</a>
+      <a class="p-2 link-secondary" href="medcard">Medcard</a>
+      <a class="p-2 link-secondary" href="ticket">Tickets</a>
+      <a class="p-2 link-secondary" href="talon">Get ticket</a>
+      <a class="p-2 link-secondary" href="${pageContext.request.contextPath}/logout">Logout</a>
     </nav>
   </div>
 </div>
@@ -46,24 +48,21 @@
       Medcard records information page
     </h4>
 
-    <div class="SuccessAnswer" ><span style='color: green;' id="response"></span></div>
-    <div class="ErrorAnswer"><span style='color: red;' id="responseError"></span></div>
-
     <div class="card overflow-hidden">
 
         <c:choose>
-            <c:when test="${medcards.size() > 0}">
+            <c:when test="${medcard.size() > 0}">
                 <table border="1" style = "text-align:center">
                     <tbody>
                             <tr>
-                                <td width="15%" style="font-size:20px;"><strong>Patient</strong></td>
+                                <td width="15%" style="font-size:20px;"><strong>Doctor</strong></td>
                                 <td width="15%" style="font-size:20px;"><strong>Disease</strong></td>
                                 <td width="15%" style="font-size:20px;"><strong>Diagnose date</strong></td>
                                 <td width="15%" style="font-size:20px;"><strong>Discharge date</strong></td>
                                 <td width="40%" style="font-size:20px;"><strong>Notes</strong></td>
                             </tr>
 
-                        <c:forEach items="${medcards}" var="item" varStatus="status">
+                        <c:forEach items="${medcard}" var="item" varStatus="status">
                             <tr>
                                 <td width="15%">${item.username}</td>
                                 <td width="15%">${item.diseaseName}</td>
