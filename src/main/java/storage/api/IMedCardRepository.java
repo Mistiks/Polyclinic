@@ -26,4 +26,6 @@ public interface IMedCardRepository extends JpaRepository<MedCard, Integer> {
             value = "SELECT new model.dto.MedCardWithUsername(u.login, card.diseaseName, card.diagnoseDate, card.dischargeDate, card.notes) FROM MedCard card " +
                     "inner join User u ON card.doctorId = u.doctorId WHERE card.cardId = ?1 ORDER BY card.diagnoseDate")
     List<MedCardWithUsername> findByUserIdOrderByDiagnoseDate(Integer userId);
+
+    List<MedCard> findAllByUserId(Integer userId);
 }

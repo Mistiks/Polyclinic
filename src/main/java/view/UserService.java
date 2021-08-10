@@ -1,9 +1,6 @@
 package view;
 
-import model.Address;
-import model.Passport;
-import model.Talon;
-import model.User;
+import model.*;
 import model.dto.*;
 import model.enums.Role;
 import model.enums.Status;
@@ -148,13 +145,14 @@ public class UserService implements IUserService {
             user.setHash(hashCreator.createHash(input.getCurrentPassword()).concat(user.getSalt()));
         }
 
-
         address.setCity(input.getCity());
         address.setStreet(input.getStreet());
         address.setHouse(input.getHouse());
         address.setFlat(input.getFlat());
         address.setResidenceCountry(input.getResidenceCountry());
+        address.setUserId(user.getId());
         passport.setPassportId(input.getPassportId());
+        passport.setUserId(user.getId());
         passport.setPassportNum(input.getPassportNum());
         passport.setCountry(input.getCountry());
         passport.setNationality(input.getNationality());
@@ -212,11 +210,13 @@ public class UserService implements IUserService {
         user.setPastPosition(user.getPastPosition());
         user.setCabinetNum(user.getCabinetNum());
         user.setMail(input.getMail());
+        address.setUserId(user.getId());
         address.setCity(input.getCity());
         address.setStreet(input.getStreet());
         address.setHouse(input.getHouse());
         address.setFlat(input.getFlat());
         address.setResidenceCountry(input.getResidenceCountry());
+        passport.setUserId(user.getId());
         passport.setPassportId(input.getPassportId());
         passport.setPassportNum(input.getPassportNum());
         passport.setCountry(input.getCountry());
@@ -266,10 +266,10 @@ public class UserService implements IUserService {
             userProfileDTO.setPassportNum(passport.getPassportNum());
             userProfileDTO.setCountry(passport.getCountry());
             userProfileDTO.setNationality(passport.getNationality());
-            userProfileDTO.setBirthDate(passport.getBirthDate().format(formatter));
+            userProfileDTO.setBirthDate(checkAndParse(passport.getBirthDate()));
             userProfileDTO.setSex(passport.getSex());
-            userProfileDTO.setIssueDate(passport.getIssueDate().format(formatter));
-            userProfileDTO.setExpireDate(passport.getExpireDate().format(formatter));
+            userProfileDTO.setIssueDate(checkAndParse(passport.getIssueDate()));
+            userProfileDTO.setExpireDate(checkAndParse(passport.getExpireDate()));
             userProfileDTO.setBirthCountry(passport.getBirthCountry());
         }
 
@@ -326,6 +326,11 @@ public class UserService implements IUserService {
         List<Talon> talonList = talonRepository.findAllByUserId(user.getId());
         Passport passport = passportRepository.getByUserId(user.getId());
         Address address = addressRepository.getByUserId(user.getId());
+        List<MedCard> medCardList = medCardRepository.findAllByUserId(user.getId());
+
+        for (MedCard medCard : medCardList) {
+            medCardRepository.delete(medCard);
+        }
 
         for (Talon talon : talonList) {
             talon.setUserId(null);
@@ -372,6 +377,20 @@ public class UserService implements IUserService {
                 result = LocalDate.parse(date, formatter);
             } catch (DateTimeParseException e) {
                 throw new IllegalArgumentException("Date is wrong!");
+            }
+        }
+
+        return result;
+    }
+
+    private String checkAndParse(LocalDate date) {
+        String result = null;
+
+        if (date != null) {
+            try {
+                result = date.format(formatter);
+            } catch (DateTimeParseException e) {
+                throw new IllegalArgumentException("Couldn't get date!");
             }
         }
 

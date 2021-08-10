@@ -243,17 +243,17 @@
 
                 <div class="form-group">
                   <label class="form-label">Issue date in format dd/MM/yyyy</label>
-                  <input type="text" class="form-control" value = ${profile.issueDate} name ="issueDate" id ="issueDate">
+                  <input type="text" class="form-control" name ="issueDate" id ="issueDate" value = ${profile.issueDate}>
                 </div>
 
                 <div class="form-group">
                   <label class="form-label">Expire date in format dd/MM/yyyy</label>
-                  <input type="text" class="form-control" value = ${profile.expireDate} name ="expireDate" id ="expireDate">
+                  <input type="text" class="form-control" name ="expireDate" id ="expireDate" value = ${profile.expireDate}>
                 </div>
 
                 <div class="form-group">
                   <label class="form-label">Birth Date in format dd/MM/yyyy</label>
-                  <input type="text" class="form-control" value = ${profile.birthDate} name ="birthDate" id ="birthDate">
+                  <input type="text" class="form-control" name ="birthDate" id ="birthDate" value = ${profile.birthDate}>
                 </div>
 
                 <div class="form-group">
